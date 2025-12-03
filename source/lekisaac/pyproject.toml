@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools", "wheel", "toml"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lekisaac"
+version = "0.1.0"
+description = "lekisaac: LeKiwi robot integration with IsaacLab via leisaac"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "vpraise", email = ""}
+]
+keywords = ["extension", "isaaclab", "leisaac", "lekiwi", "mobile-manipulation"]
+classifiers = [
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.11",
+    "Isaac Sim :: 5.0.0",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "leisaac",
+]
+
+[project.urls]
+Homepage = "https://github.com/vpraise00/lekisaac"
+Repository = "https://github.com/vpraise00/lekisaac"
+
+[tool.setuptools]
+packages = ["lekisaac"]
+include-package-data = true
+zip-safe = false
