@@ -16,15 +16,44 @@ from lekisaac.utils.constant import URDF_ROOT
 # For now, we use a placeholder path - users need to convert URDF to USD
 LEKIWI_ASSET_PATH = Path(URDF_ROOT) / "lekiwi" / "lekiwi.usd"
 
+# Joint name mapping from USD (actual names from URDF conversion)
+# Arm joints:
+#   STS3215_03a_v1_Revolute_45 -> shoulder_pan
+#   STS3215_03a_v1_1_Revolute_49 -> shoulder_lift
+#   STS3215_03a_v1_2_Revolute_51 -> elbow_flex
+#   STS3215_03a_v1_3_Revolute_53 -> wrist_flex
+#   STS3215_03a_Wrist_Roll_v1_Revolute_55 -> wrist_roll
+#   STS3215_03a_v1_4_Revolute_57 -> gripper
+# Wheel joints:
+#   ST3215_Servo_Motor_v1_Revolute_64 -> wheel_left
+#   ST3215_Servo_Motor_v1_1_Revolute_62 -> wheel_right
+#   ST3215_Servo_Motor_v1_2_Revolute_60 -> wheel_back
+
+# USD joint names (as exported from URDF)
+USD_JOINT_NAMES = {
+    "shoulder_pan": "STS3215_03a_v1_Revolute_45",
+    "shoulder_lift": "STS3215_03a_v1_1_Revolute_49",
+    "elbow_flex": "STS3215_03a_v1_2_Revolute_51",
+    "wrist_flex": "STS3215_03a_v1_3_Revolute_53",
+    "wrist_roll": "STS3215_03a_Wrist_Roll_v1_Revolute_55",
+    "gripper": "STS3215_03a_v1_4_Revolute_57",
+    "wheel_left": "ST3215_Servo_Motor_v1_Revolute_64",
+    "wheel_right": "ST3215_Servo_Motor_v1_1_Revolute_62",
+    "wheel_back": "ST3215_Servo_Motor_v1_2_Revolute_60",
+}
+
 # LeKiwi robot configuration
 # Note: fix_root_link=False to allow mobile base movement
 LEKIWI_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
         usd_path=str(LEKIWI_ASSET_PATH),
         rigid_props=sim_utils.RigidBodyPropertiesCfg(disable_gravity=False),
+        collision_props=sim_utils.CollisionPropertiesCfg(
+            collision_enabled=True,
+        ),
         articulation_props=sim_utils.ArticulationRootPropertiesCfg(
             enabled_self_collisions=True,
-            solver_position_iteration_count=4,
+            solver_position_iteration_count=8,  # Increased for better wheel contact
             solver_velocity_iteration_count=4,
             fix_root_link=False,  # Mobile base - unfixed root
         ),
@@ -33,23 +62,23 @@ LEKIWI_CFG = ArticulationCfg(
         pos=(0.0, 0.0, 0.05),  # Start slightly above ground for wheels
         rot=(1.0, 0.0, 0.0, 0.0),  # wxyz quaternion
         joint_pos={
-            # Arm joints (same as SO101)
-            "shoulder_pan": 0.0,
-            "shoulder_lift": 0.0,
-            "elbow_flex": 0.0,
-            "wrist_flex": 0.0,
-            "wrist_roll": 0.0,
-            "gripper": 0.0,
+            # Arm joints (using actual USD joint names)
+            USD_JOINT_NAMES["shoulder_pan"]: 0.0,
+            USD_JOINT_NAMES["shoulder_lift"]: 0.0,
+            USD_JOINT_NAMES["elbow_flex"]: 0.0,
+            USD_JOINT_NAMES["wrist_flex"]: 0.0,
+            USD_JOINT_NAMES["wrist_roll"]: 0.0,
+            USD_JOINT_NAMES["gripper"]: 0.0,
             # Wheel joints (continuous)
-            "wheel_left": 0.0,
-            "wheel_right": 0.0,
-            "wheel_back": 0.0,
+            USD_JOINT_NAMES["wheel_left"]: 0.0,
+            USD_JOINT_NAMES["wheel_right"]: 0.0,
+            USD_JOINT_NAMES["wheel_back"]: 0.0,
         },
     ),
     actuators={
         # Gripper actuator
         "sts3215-gripper": ImplicitActuatorCfg(
-            joint_names_expr=["gripper"],
+            joint_names_expr=[USD_JOINT_NAMES["gripper"]],
             effort_limit_sim=10,
             velocity_limit_sim=10,
             stiffness=17.8,
@@ -58,11 +87,11 @@ LEKIWI_CFG = ArticulationCfg(
         # Arm actuators (5 DOF)
         "sts3215-arm": ImplicitActuatorCfg(
             joint_names_expr=[
-                "shoulder_pan",
-                "shoulder_lift",
-                "elbow_flex",
-                "wrist_flex",
-                "wrist_roll",
+                USD_JOINT_NAMES["shoulder_pan"],
+                USD_JOINT_NAMES["shoulder_lift"],
+                USD_JOINT_NAMES["elbow_flex"],
+                USD_JOINT_NAMES["wrist_flex"],
+                USD_JOINT_NAMES["wrist_roll"],
             ],
             effort_limit_sim=10,
             velocity_limit_sim=10,
@@ -70,12 +99,18 @@ LEKIWI_CFG = ArticulationCfg(
             damping=0.60,
         ),
         # Wheel actuators for omni-directional movement
+        # For velocity control: stiffness=0, damping must be VERY HIGH
+        # Reference: https://docs.isaacsim.omniverse.nvidia.com/latest/robot_simulation/mobile_robot_controllers.html
         "wheel-motors": ImplicitActuatorCfg(
-            joint_names_expr=["wheel_.*"],
-            effort_limit_sim=20,
-            velocity_limit_sim=20,
-            stiffness=0.0,  # Velocity control mode
-            damping=10.0,
+            joint_names_expr=[
+                USD_JOINT_NAMES["wheel_left"],
+                USD_JOINT_NAMES["wheel_right"],
+                USD_JOINT_NAMES["wheel_back"],
+            ],
+            effort_limit_sim=200,   # Increased for responsive wheel control
+            velocity_limit_sim=50,
+            stiffness=0.0,  # Velocity control mode - MUST be 0
+            damping=1e5,    # VERY HIGH damping required for velocity control (prevents vibration)
         ),
     },
     soft_joint_pos_limit_factor=1.0,

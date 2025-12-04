@@ -3,12 +3,26 @@
 
 """Action processing for LeKiwi robot teleoperation."""
 
+import math
 import torch
 from typing import Any
 
 import isaaclab.envs.mdp as mdp
 
-from leisaac.assets.robots.lerobot import SO101_FOLLOWER_USD_JOINT_LIMLITS
+from lekisaac.assets import USD_JOINT_NAMES
+
+
+# URDF joint limits in radians (symmetric around zero)
+# Same as lerobot_ros2/src/lerobot_ros2/data_collection/robot_bridge.py URDF_LIMITS
+# This ensures consistent normalized → radians conversion
+URDF_LIMITS = {
+    "shoulder_pan": 1.91986,   # ~110°
+    "shoulder_lift": 1.74533,  # ~100°
+    "elbow_flex": 1.69,        # ~97°
+    "wrist_flex": 1.65806,     # ~95°
+    "wrist_roll": 2.74385,     # ~157°
+    "gripper": 1.155855,       # ~66°
+}
 
 
 def init_lekiwi_action_cfg(action_cfg, device):
@@ -22,22 +36,32 @@ def init_lekiwi_action_cfg(action_cfg, device):
         The modified action configuration.
     """
     if device == "lekiwi":
-        # Arm actions (joint position control)
+        # Arm actions (joint position control) - using USD joint names
         action_cfg.arm_action = mdp.JointPositionActionCfg(
             asset_name="robot",
-            joint_names=["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"],
+            joint_names=[
+                USD_JOINT_NAMES["shoulder_pan"],
+                USD_JOINT_NAMES["shoulder_lift"],
+                USD_JOINT_NAMES["elbow_flex"],
+                USD_JOINT_NAMES["wrist_flex"],
+                USD_JOINT_NAMES["wrist_roll"],
+            ],
             scale=1.0,
         )
-        # Gripper action (joint position control)
+        # Gripper action (joint position control) - using USD joint name
         action_cfg.gripper_action = mdp.JointPositionActionCfg(
             asset_name="robot",
-            joint_names=["gripper"],
+            joint_names=[USD_JOINT_NAMES["gripper"]],
             scale=1.0,
         )
-        # Base velocity action (for omnidirectional movement)
+        # Base velocity action (for omnidirectional movement) - using USD joint names
         action_cfg.base_velocity_action = mdp.JointVelocityActionCfg(
             asset_name="robot",
-            joint_names=["wheel_left", "wheel_right", "wheel_back"],
+            joint_names=[
+                USD_JOINT_NAMES["wheel_left"],
+                USD_JOINT_NAMES["wheel_right"],
+                USD_JOINT_NAMES["wheel_back"],
+            ],
             scale=1.0,
         )
     else:
@@ -57,6 +81,49 @@ joint_names_to_motor_ids = {
     "gripper": 5,
 }
 
+# SO-101 Leader → SO-100 (LeKiwi) joint transformations
+# These compensate for differences between SO-101 leader and SO-100 follower
+# Reference: lerobot_ros2/scripts/lekiwi/lekiwi_teleop_relay.py
+
+# Direction inversions (1.0 = same direction, -1.0 = inverted)
+JOINT_INVERSIONS = {
+    "shoulder_pan": 1.0,     # Not inverted
+    "shoulder_lift": -1.0,   # Inverted
+    "elbow_flex": -1.0,      # Inverted
+    "wrist_flex": -1.0,      # Inverted
+    "wrist_roll": -1.0,      # Inverted
+    "gripper": -1.0,         # Inverted
+}
+
+# Scale factors (SO-101 → LeKiwi range compensation)
+# Reference: lerobot_ros2/scripts/lekiwi/lekiwi_teleop_relay.py
+# Tuned empirically based on encoder range ratios and physical testing
+#
+# SO-100 vs SO-101 URDF Limits (from lekiwi_teleop_relay.py):
+#   shoulder_lift: sim moves less than physical → scale up 1.5
+#   elbow_flex: sim moves less than physical → scale up 1.5
+#   wrist_flex: encoder range 2325/4095 = 0.57
+#   wrist_roll: encoder range 2092/4095 = 0.51
+JOINT_SCALES = {
+    "shoulder_pan": 1.0,
+    "shoulder_lift": 1.5,    # Sim moves less than physical
+    "elbow_flex": 1.5,       # Sim moves less than physical
+    "wrist_flex": 0.9,       # Encoder range compensation
+    "wrist_roll": 0.5,       # Encoder range compensation (0.51 rounded)
+    "gripper": 1.0,
+}
+
+# Offsets (radians) - for asymmetric calibration compensation
+# Reference: lerobot_ros2/scripts/lekiwi/lekiwi_teleop_relay.py
+JOINT_OFFSETS = {
+    "shoulder_pan": 0.0,
+    "shoulder_lift": 0.0,
+    "elbow_flex": 0.0,
+    "wrist_flex": 1.3,       # Asymmetric calibration compensation
+    "wrist_roll": 0.0,
+    "gripper": 0.0,
+}
+
 
 def convert_arm_action_from_so101_leader(
     joint_state: dict[str, float],
@@ -65,44 +132,65 @@ def convert_arm_action_from_so101_leader(
 ) -> torch.Tensor:
     """Convert SO101Leader joint state to arm action tensor.
 
+    Uses the same conversion approach as lerobot_ros2's robot_bridge.py:
+    1. Normalized position (-100 to 100) → radians using URDF_LIMITS (symmetric)
+    2. Apply SO-101 → SO-100 (LeKiwi) transformations (inversions, scales, offsets)
+
     Args:
-        joint_state: Dictionary of joint positions from SO101Leader.
-        motor_limits: Dictionary of motor position limits.
+        joint_state: Dictionary of normalized joint positions from SO101Leader.
+                     Arm joints: -100 to 100, Gripper: 0 to 100.
+        motor_limits: Dictionary of motor position limits (unused, kept for API compatibility).
         teleop_device: The teleoperation device instance.
 
     Returns:
         Tensor of shape (num_envs, 6) containing arm joint positions in radians.
     """
     processed_action = torch.zeros(teleop_device.env.num_envs, 6, device=teleop_device.env.device)
-    joint_limits = SO101_FOLLOWER_USD_JOINT_LIMLITS
 
     for joint_name, motor_id in joint_names_to_motor_ids.items():
-        motor_limit_range = motor_limits[joint_name]
-        joint_limit_range = joint_limits[joint_name]
+        # Get normalized position from leader
+        normalized_pos = joint_state[joint_name]
 
-        # Map motor position to joint angle in degrees
-        processed_degree = (
-            (joint_state[joint_name] - motor_limit_range[0])
-            / (motor_limit_range[1] - motor_limit_range[0])
-            * (joint_limit_range[1] - joint_limit_range[0])
-            + joint_limit_range[0]
-        )
-        # Convert degrees to radians
-        processed_radius = processed_degree / 180.0 * torch.pi
-        processed_action[:, motor_id] = processed_radius
+        # Convert normalized → radians using symmetric URDF limits
+        # Same as lerobot_ros2/robot_bridge.py: radians = normalized / 100.0 * urdf_limit
+        urdf_limit = URDF_LIMITS.get(joint_name, 1.75)
+
+        if joint_name == "gripper":
+            # Gripper uses 0-100 range, map to 0 to urdf_limit
+            processed_radius = normalized_pos / 100.0 * urdf_limit
+        else:
+            # Arm joints use -100 to 100 range, map to -urdf_limit to +urdf_limit
+            processed_radius = normalized_pos / 100.0 * urdf_limit
+
+        # Apply SO-101 → SO-100 (LeKiwi) transformations
+        # Formula: cmd = pos * inversion * scale + offset
+        # Reference: lerobot_ros2/scripts/lekiwi/lekiwi_teleop_relay.py
+        inversion = JOINT_INVERSIONS.get(joint_name, 1.0)
+        scale = JOINT_SCALES.get(joint_name, 1.0)
+        offset = JOINT_OFFSETS.get(joint_name, 0.0)
+
+        transformed_radius = processed_radius * inversion * scale + offset
+        processed_action[:, motor_id] = transformed_radius
 
     return processed_action
 
 
 def convert_base_velocity_to_wheel_velocities(
     base_velocity: torch.Tensor,
-    wheel_radius: float = 0.048,  # 4" omni wheel radius in meters
-    base_radius: float = 0.1,     # Distance from base center to wheel
+    wheel_radius: float = 0.055,  # LeKiwi omni wheel radius in meters
+    base_radius: float = 0.25,    # Distance from base center to wheel axis
 ) -> torch.Tensor:
     """Convert base velocity command to individual wheel velocities.
 
-    Uses inverse kinematics for a 3-wheel omnidirectional robot with
-    wheels arranged in a Y configuration (120 degrees apart).
+    LeKiwi Y-configuration kiwi drive (looking from above, arm pointing +X):
+    - ST3215_Servo_Motor_v1_2 (Revolute_60) = Back wheel (axis: 0, 0, -1)
+    - ST3215_Servo_Motor_v1_1 (Revolute_62) = Right front wheel (axis: 0.866, 0, 0.5)
+    - ST3215_Servo_Motor_v1 (Revolute_64) = Left front wheel (axis: -0.866, 0, 0.5)
+
+    Motion control:
+    - W/S (vx): Forward/backward - front wheels rotate opposite, back minimal
+    - A/D (vy): Strafe left/right - all wheels same direction, ratio back:front = 1 : 2/√3
+    - Z/X (wz): Rotation - all wheels same direction uniformly (Z=CW, X=CCW)
 
     Args:
         base_velocity: Tensor of shape (num_envs, 3) with [linear_x, linear_y, angular_z].
@@ -113,39 +201,70 @@ def convert_base_velocity_to_wheel_velocities(
         Tensor of shape (num_envs, 3) with wheel angular velocities [left, right, back].
     """
     # Extract velocity components
-    vx = base_velocity[:, 0]  # Forward velocity
-    vy = base_velocity[:, 1]  # Left strafe velocity
-    wz = base_velocity[:, 2]  # Counter-clockwise angular velocity
+    vx = base_velocity[:, 0]  # Forward velocity (+X)
+    vy = base_velocity[:, 1]  # Left strafe velocity (+Y)
+    wz = base_velocity[:, 2]  # CCW rotation (positive = CCW robot rotation)
 
-    # Wheel positions for Y-configuration (120 degrees apart)
-    # Front-left wheel at 120 degrees
-    # Front-right wheel at 60 degrees
-    # Back wheel at 270 degrees (pointing backward)
+    r = wheel_radius
+    R = base_radius
+    sqrt3 = math.sqrt(3)
 
-    # Inverse kinematics matrix for 3-wheel omni robot
-    # Each row represents one wheel's contribution
-    # [cos(theta), sin(theta), base_radius] for each wheel
+    # === Forward/Backward (W/S) ===
+    # Front wheels rotate in opposite directions, back wheel minimal
+    # For forward (vx > 0): left wheel CCW, right wheel CW
+    forward_left = vx / r * (2 / sqrt3)
+    forward_right = -vx / r * (2 / sqrt3)
+    forward_back = 0.0
 
-    import math
+    # === Strafe Left/Right (A/D) ===
+    # All wheels rotate same direction
+    # Ratio: back = 1, front = 2/√3 ≈ 1.155
+    # For left strafe (vy > 0): all wheels rotate to push robot left
+    strafe_left = -vy / r * (2 / sqrt3)
+    strafe_right = -vy / r * (2 / sqrt3)
+    strafe_back = -vy / r * 1.0
 
-    # Wheel angles from base center (Y-configuration)
-    theta_left = math.radians(120)   # Front-left
-    theta_right = math.radians(60)   # Front-right
-    theta_back = math.radians(270)   # Back
+    # === Rotation (Z/X) ===
+    # All wheels rotate same direction uniformly
+    # Z (wz > 0, CCW robot rotation) -> all wheels CW
+    # X (wz < 0, CW robot rotation) -> all wheels CCW
+    rotate_all = wz * R / r
 
-    # Calculate wheel linear velocities at contact point
-    # v_wheel = vx * sin(theta) - vy * cos(theta) + wz * base_radius
-    v_left = vx * math.sin(theta_left) - vy * math.cos(theta_left) + wz * base_radius
-    v_right = vx * math.sin(theta_right) - vy * math.cos(theta_right) + wz * base_radius
-    v_back = vx * math.sin(theta_back) - vy * math.cos(theta_back) + wz * base_radius
+    # Combine all components
+    # Front wheels need inverted rotation direction
+    omega_left = forward_left + strafe_left - rotate_all
+    omega_right = forward_right + strafe_right - rotate_all
+    omega_back = forward_back + strafe_back + rotate_all
 
-    # Convert linear velocity to angular velocity: omega = v / r
-    omega_left = v_left / wheel_radius
-    omega_right = v_right / wheel_radius
-    omega_back = v_back / wheel_radius
+    # === Physical Wheel Mapping (determined by forward motion observation) ===
+    # When W pressed: back & left_front rotating, right_front NOT rotating
+    # My output [pos, pos, 0] means:
+    #   - Position 0 (Revolute_64) = back wheel (getting omega that should be 0)
+    #   - Position 1 (Revolute_62) = left front wheel (rotating correctly)
+    #   - Position 2 (Revolute_60) = right front wheel (getting 0, should be rotating)
+    #
+    # URDF Axes:
+    #   - Revolute_64 (back): axis (-0.866, 0, 0.5)
+    #   - Revolute_62 (left front): axis (0.866, 0, 0.5)
+    #   - Revolute_60 (right front): axis (0, 0, -1)
+    #
+    # Axis corrections:
+    #   - Back (Revolute_64, axis -0.866,0,0.5): needs inversion
+    #   - Left front (Revolute_62, axis 0.866,0,0.5): no inversion
+    #   - Right front (Revolute_60, axis 0,0,-1): no inversion
+    omega_back = -omega_back  # Back wheel axis has negative X component
 
-    # Stack into output tensor
-    wheel_velocities = torch.stack([omega_left, omega_right, omega_back], dim=-1)
+    # Velocity scale factor for faster wheel response
+    WHEEL_VELOCITY_SCALE = 3.0
+    omega_left = omega_left * WHEEL_VELOCITY_SCALE
+    omega_right = omega_right * WHEEL_VELOCITY_SCALE
+    omega_back = omega_back * WHEEL_VELOCITY_SCALE
+
+    # Stack into output tensor to match action config order
+    # Action config: [Revolute_64, Revolute_62, Revolute_60]
+    # Physical:      [back,        left_front,  right_front]
+    # Output:        [omega_back,  omega_left,  omega_right]
+    wheel_velocities = torch.stack([omega_back, omega_left, omega_right], dim=-1)
 
     return wheel_velocities
 

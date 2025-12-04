@@ -9,7 +9,7 @@ from typing import Any
 
 import isaaclab.sim as sim_utils
 from isaaclab.envs.mdp.recorders.recorders_cfg import ActionStateRecorderManagerCfg as RecordTerm
-from isaaclab.assets import ArticulationCfg, AssetBaseCfg
+from isaaclab.assets import ArticulationCfg, AssetBaseCfg, RigidObjectCfg
 from isaaclab.envs import ManagerBasedRLEnvCfg
 from isaaclab.managers import EventTermCfg as EventTerm
 from isaaclab.managers import ObservationGroupCfg as ObsGroup
@@ -30,41 +30,50 @@ from . import mdp
 class LeKiwiTeleopSceneCfg(InteractiveSceneCfg):
     """Scene configuration for LeKiwi teleoperation."""
 
-    # Ground plane
+    # Ground plane with high friction for wheel traction
     ground = AssetBaseCfg(
         prim_path="/World/defaultGroundPlane",
-        spawn=sim_utils.GroundPlaneCfg(),
+        spawn=sim_utils.GroundPlaneCfg(
+            physics_material=sim_utils.RigidBodyMaterialCfg(
+                static_friction=1.0,
+                dynamic_friction=1.0,
+                restitution=0.0,
+            ),
+        ),
     )
 
     # LeKiwi robot (mobile manipulator)
+    # Note: USD structure is /Root/LeKiwi/... so robot prims are at {ENV_REGEX_NS}/Robot/LeKiwi/...
     robot: ArticulationCfg = LEKIWI_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
 
     # End-effector frame transformer
+    # base_plate_layer1_v5 is the articulation root, Moving_Jaw_08d_v1 is the gripper
     ee_frame: FrameTransformerCfg = FrameTransformerCfg(
-        prim_path="{ENV_REGEX_NS}/Robot/base_plate_layer1_v5",
+        prim_path="{ENV_REGEX_NS}/Robot/LeKiwi/base_plate_layer1_v5",
         debug_vis=False,
         target_frames=[
             FrameTransformerCfg.FrameCfg(
-                prim_path="{ENV_REGEX_NS}/Robot/gripper",
+                prim_path="{ENV_REGEX_NS}/Robot/LeKiwi/Moving_Jaw_08d_v1",
                 name="gripper",
             ),
         ],
     )
 
-    # Wrist camera (attached to gripper)
+    # Wrist camera (attached to Camera_Model_v3_1 - wrist camera model)
+    # Transform from set_lekiwi_cameras.py: translate (0, 0, 0), rotateXYZ (-15, -120, 0)
     wrist: TiledCameraCfg = TiledCameraCfg(
-        prim_path="{ENV_REGEX_NS}/Robot/gripper/wrist_camera",
+        prim_path="{ENV_REGEX_NS}/Robot/LeKiwi/Camera_Model_v3_1/wrist_camera",
         offset=TiledCameraCfg.OffsetCfg(
-            pos=(-0.001, 0.1, -0.04),
-            rot=(-0.404379, -0.912179, -0.0451242, 0.0486914),
+            pos=(0.0, 0.0, 0.0),
+            rot=(-0.0653, -0.8586, -0.113, 0.4957),  # XYZ Euler (-15, -120, 0) -> quaternion (xyzw)
             convention="ros",
         ),
         data_types=["rgb"],
         spawn=sim_utils.PinholeCameraCfg(
-            focal_length=36.5,
-            focus_distance=400.0,
-            horizontal_aperture=36.83,
-            clipping_range=(0.01, 50.0),
+            focal_length=18.0,  # From set_lekiwi_cameras.py
+            focus_distance=1.0,
+            horizontal_aperture=20.955,  # From set_lekiwi_cameras.py
+            clipping_range=(0.01, 200.0),
             lock_camera=True,
         ),
         width=640,
@@ -72,20 +81,21 @@ class LeKiwiTeleopSceneCfg(InteractiveSceneCfg):
         update_period=1 / 30.0,
     )
 
-    # Top-down camera
-    top: TiledCameraCfg = TiledCameraCfg(
-        prim_path="{ENV_REGEX_NS}/Robot/base_plate_layer1_v5/top_camera",
+    # Base camera (attached to Camera_Model_v3 - base camera model)
+    # Transform from set_lekiwi_cameras.py: translate (-0.01, 0.01, 0), rotateXYZ (90, 100, 0)
+    base: TiledCameraCfg = TiledCameraCfg(
+        prim_path="{ENV_REGEX_NS}/Robot/LeKiwi/Camera_Model_v3/base_camera",
         offset=TiledCameraCfg.OffsetCfg(
-            pos=(0.0, 0.0, 1.5),
-            rot=(0.0, 0.0, 0.0, 1.0),
+            pos=(-0.01, 0.01, 0.0),
+            rot=(0.4545, 0.5417, -0.5417, 0.4545),  # XYZ Euler (90, 100, 0) -> quaternion (xyzw)
             convention="ros",
         ),
         data_types=["rgb"],
         spawn=sim_utils.PinholeCameraCfg(
-            focal_length=24.0,
-            focus_distance=400.0,
-            horizontal_aperture=40.0,
-            clipping_range=(0.01, 50.0),
+            focal_length=18.0,  # From set_lekiwi_cameras.py
+            focus_distance=1.0,
+            horizontal_aperture=20.955,  # From set_lekiwi_cameras.py
+            clipping_range=(0.01, 200.0),
             lock_camera=True,
         ),
         width=640,
@@ -97,6 +107,29 @@ class LeKiwiTeleopSceneCfg(InteractiveSceneCfg):
     light = AssetBaseCfg(
         prim_path="/World/Light",
         spawn=sim_utils.DomeLightCfg(color=(0.75, 0.75, 0.75), intensity=3000.0),
+    )
+
+    # Small cube for grasping test
+    # Placed in front of the robot gripper (robot starts at origin, arm extends forward)
+    cube: RigidObjectCfg = RigidObjectCfg(
+        prim_path="{ENV_REGEX_NS}/Cube",
+        spawn=sim_utils.CuboidCfg(
+            size=(0.02, 0.02, 0.02),  # 2cm cube
+            rigid_props=sim_utils.RigidBodyPropertiesCfg(
+                disable_gravity=False,
+                max_depenetration_velocity=1.0,
+            ),
+            mass_props=sim_utils.MassPropertiesCfg(mass=0.01),  # 10g
+            collision_props=sim_utils.CollisionPropertiesCfg(),
+            visual_material=sim_utils.PreviewSurfaceCfg(
+                diffuse_color=(1.0, 0.2, 0.2),  # Red color for visibility
+                metallic=0.2,
+            ),
+        ),
+        init_state=RigidObjectCfg.InitialStateCfg(
+            pos=(0.0247, 0.29177, 0.12),  # Near gripper position
+            rot=(1.0, 0.0, 0.0, 0.0),
+        ),
     )
 
 
@@ -134,9 +167,9 @@ class LeKiwiObservationsCfg:
             func=mdp.image,
             params={"sensor_cfg": SceneEntityCfg("wrist"), "data_type": "rgb", "normalize": False},
         )
-        top = ObsTerm(
+        base = ObsTerm(
             func=mdp.image,
-            params={"sensor_cfg": SceneEntityCfg("top"), "data_type": "rgb", "normalize": False},
+            params={"sensor_cfg": SceneEntityCfg("base"), "data_type": "rgb", "normalize": False},
         )
 
         # Robot pose (for mobile base)

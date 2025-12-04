@@ -9,7 +9,7 @@ description = "lekisaac: LeKiwi robot integration with IsaacLab via leisaac"
 readme = "README.md"
 license = {text = "Apache-2.0"}
 authors = [
-    {name = "vpraise", email = ""}
+    {name = "vpraise"}
 ]
 keywords = ["extension", "isaaclab", "leisaac", "lekiwi", "mobile-manipulation"]
 classifiers = [

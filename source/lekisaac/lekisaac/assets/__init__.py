@@ -3,4 +3,4 @@
 
 """Asset configurations for lekisaac."""
 
-from .lekiwi import LEKIWI_CFG, LEKIWI_MOTOR_LIMITS, LEKIWI_USD_JOINT_LIMITS
+from .lekiwi import LEKIWI_CFG, LEKIWI_MOTOR_LIMITS, LEKIWI_USD_JOINT_LIMITS, USD_JOINT_NAMES

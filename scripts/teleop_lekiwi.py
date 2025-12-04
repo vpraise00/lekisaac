@@ -144,19 +144,21 @@ def main():
 
     # Create environment
     env = gym.make(args_cli.task, cfg=env_cfg)
+    # Get unwrapped environment for direct access to IsaacLab internals
+    unwrapped_env = env.unwrapped
 
     # Replace recorder manager with streaming version if recording
     if args_cli.record:
-        env.recorder_manager = StreamingRecorderManager(
+        unwrapped_env.recorder_manager = StreamingRecorderManager(
             env_cfg.recorders,
-            env,
+            unwrapped_env,
             flush_steps=30,
             episode_stop_condition=args_cli.num_demos if args_cli.num_demos > 0 else None,
         )
 
     # Create LeKiwi teleoperation device
     teleop_device = LeKiwiDevice(
-        env,
+        unwrapped_env,
         port=args_cli.port,
         recalibrate=args_cli.recalibrate,
         base_linear_speed=args_cli.base_linear_speed,
@@ -164,8 +166,8 @@ def main():
     )
 
     # Add callbacks for episode termination
-    teleop_device.add_callback("R", lambda: manual_terminate(env, success=False))
-    teleop_device.add_callback("N", lambda: manual_terminate(env, success=True))
+    teleop_device.add_callback("R", lambda: manual_terminate(unwrapped_env, success=False))
+    teleop_device.add_callback("N", lambda: manual_terminate(unwrapped_env, success=True))
 
     print(teleop_device)
 
@@ -184,7 +186,7 @@ def main():
 
         if action is None:
             # Not started yet - just render
-            env.sim.render()
+            unwrapped_env.sim.render()
             continue
 
         if isinstance(action, dict):
@@ -198,12 +200,12 @@ def main():
         env.step(action)
 
         # Enforce stepping rate
-        rate_limiter.sleep(env)
+        rate_limiter.sleep(unwrapped_env)
 
         # Check if we should stop (reached demo limit)
         if args_cli.record and args_cli.num_demos > 0:
-            if hasattr(env, "recorder_manager"):
-                if env.recorder_manager.should_stop:
+            if hasattr(unwrapped_env, "recorder_manager"):
+                if unwrapped_env.recorder_manager.should_stop:
                     print(f"\n[INFO] Collected {args_cli.num_demos} demonstrations. Stopping.")
                     break
 

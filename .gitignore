@@ -1,0 +1,31 @@
+# Claude Code
+CLAUDE.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+.eggs/
+
+# Calibration cache
+source/lekisaac/lekisaac/devices/.cache/
+
+# Datasets
+datasets/
+*.hdf5
+
+# Generated USD files (but keep lekiwi.usd for distribution)
+# urdf/**/*.usd
+!urdf/lekiwi/lekiwi.usd
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

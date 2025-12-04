@@ -61,8 +61,27 @@ pip install -e source/lekisaac
 
 ### SO101Leader Configuration
 
-1. Connect SO101Leader via USB
-2. Set up port permissions:
+1. **Connect SO101Leader via USB**
+
+2. **Find the USB port**:
+   ```bash
+   # List all connected serial ports
+   ls /dev/ttyACM* /dev/ttyUSB*
+
+   # Check recently connected device (run right after plugging in)
+   dmesg | tail -20
+
+   # List USB devices with details
+   lsusb
+
+   # More detailed port information
+   ls -la /dev/serial/by-id/
+   ```
+
+   일반적으로 SO101Leader는 `/dev/ttyACM0` 또는 `/dev/ttyACM1`로 인식됩니다.
+   여러 장치가 연결된 경우 `dmesg` 출력에서 마지막으로 연결된 장치를 확인하세요.
+
+3. **Set up port permissions**:
    ```bash
    sudo chmod 666 /dev/ttyACM0
    # Or add user to dialout group (permanent)
@@ -70,7 +89,7 @@ pip install -e source/lekisaac
    # Log out and back in for group change to take effect
    ```
 
-3. Calibrate the leader device (first time only):
+4. **Calibrate the leader device** (first time only):
    ```bash
    python lekisaac/scripts/teleop_lekiwi.py \
        --task=LeKisaac-LeKiwi-Teleop-v0 \
@@ -110,8 +129,20 @@ sudo chmod 666 /dev/ttyACM0
 
 Check USB connection and verify port:
 ```bash
-ls /dev/ttyACM*
+# Check available ports
+ls /dev/ttyACM* /dev/ttyUSB*
+
+# Check kernel messages for USB connection
+dmesg | grep -i tty
+
+# Check if device is recognized
+lsusb | grep -i serial
 ```
+
+포트가 보이지 않으면:
+- USB 케이블 연결 상태 확인
+- 다른 USB 포트에 연결 시도
+- USB 케이블 교체 (데이터 케이블인지 확인)
 
 ### Import Errors
 

@@ -76,6 +76,16 @@ python lekisaac/scripts/teleop_lekiwi.py \
 | Reset (failed) | R | Reset environment (mark episode as failed) |
 | Reset (success) | N | Reset environment (mark episode as successful) |
 
+### Dataset Collection Guide
+
+For detailed instructions on collecting demonstration datasets for imitation learning, refer to the official [IsaacLab Teleoperation and Imitation Learning Guide](https://isaac-sim.github.io/IsaacLab/main/source/overview/imitation-learning/teleop_imitation.html).
+
+This guide covers:
+- **Recording demonstrations** via teleoperation with various input devices
+- **Replaying collected data** for verification and debugging
+- **Managing HDF5 datasets** for training imitation learning policies
+- **Automated data augmentation** using Isaac Lab Mimic to generate large synthetic datasets from a small number of human demonstrations
+
 ## Documentation
 
 - [Installation Guide](docs/installation.md)
