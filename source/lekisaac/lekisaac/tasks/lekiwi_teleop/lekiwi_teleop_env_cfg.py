@@ -119,8 +119,16 @@ class LeKiwiTeleopSceneCfg(InteractiveSceneCfg):
                 disable_gravity=False,
                 max_depenetration_velocity=1.0,
             ),
-            mass_props=sim_utils.MassPropertiesCfg(mass=0.01),  # 10g
-            collision_props=sim_utils.CollisionPropertiesCfg(),
+            mass_props=sim_utils.MassPropertiesCfg(mass=0.02),  # 20g (slightly heavier for stability)
+            collision_props=sim_utils.CollisionPropertiesCfg(
+                contact_offset=0.005,  # 5mm - detect contacts earlier for grasping
+                rest_offset=0.0,       # No penetration at rest
+            ),
+            physics_material=sim_utils.RigidBodyMaterialCfg(
+                static_friction=1.0,   # High friction for better grip
+                dynamic_friction=1.0,
+                restitution=0.0,       # No bounce
+            ),
             visual_material=sim_utils.PreviewSurfaceCfg(
                 diffuse_color=(1.0, 0.2, 0.2),  # Red color for visibility
                 metallic=0.2,

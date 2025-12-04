@@ -50,11 +50,13 @@ LEKIWI_CFG = ArticulationCfg(
         rigid_props=sim_utils.RigidBodyPropertiesCfg(disable_gravity=False),
         collision_props=sim_utils.CollisionPropertiesCfg(
             collision_enabled=True,
+            contact_offset=0.005,  # 5mm - detect contacts earlier for grasping
+            rest_offset=0.0,       # No penetration at rest
         ),
         articulation_props=sim_utils.ArticulationRootPropertiesCfg(
             enabled_self_collisions=False,  # Disabled to test shoulder_pan vibration
-            solver_position_iteration_count=8,  # Increased for better wheel contact
-            solver_velocity_iteration_count=4,
+            solver_position_iteration_count=16,  # Increased for better grasping contact
+            solver_velocity_iteration_count=8,   # Increased for stable grasping
             fix_root_link=False,  # Mobile base - unfixed root
         ),
     ),
@@ -82,9 +84,10 @@ LEKIWI_CFG = ArticulationCfg(
             effort_limit_sim=10,
             velocity_limit_sim=10,
             stiffness=17.8,
-            damping=0.60,
+            damping=5.0,  # Increased from 0.60 to reduce oscillation
         ),
         # Arm actuators (5 DOF)
+        # Higher damping reduces oscillation/vibration when joints move
         "sts3215-arm": ImplicitActuatorCfg(
             joint_names_expr=[
                 USD_JOINT_NAMES["shoulder_pan"],
@@ -96,7 +99,7 @@ LEKIWI_CFG = ArticulationCfg(
             effort_limit_sim=10,
             velocity_limit_sim=10,
             stiffness=17.8,
-            damping=0.60,
+            damping=5.0,  # Increased from 0.60 to reduce oscillation
         ),
         # Wheel actuators for omni-directional movement
         # For velocity control: stiffness=0, damping must be VERY HIGH
