@@ -87,7 +87,7 @@ joint_names_to_motor_ids = {
 
 # Direction inversions (1.0 = same direction, -1.0 = inverted)
 JOINT_INVERSIONS = {
-    "shoulder_pan": 1.0,     # Not inverted
+    "shoulder_pan": 1.0,     # NOT inverted (testing - was causing vibration with -1.0)
     "shoulder_lift": -1.0,   # Inverted
     "elbow_flex": -1.0,      # Inverted
     "wrist_flex": -1.0,      # Inverted
@@ -105,23 +105,23 @@ JOINT_INVERSIONS = {
 #   wrist_flex: encoder range 2325/4095 = 0.57
 #   wrist_roll: encoder range 2092/4095 = 0.51
 JOINT_SCALES = {
-    "shoulder_pan": 1.0,
-    "shoulder_lift": 1.5,    # Sim moves less than physical
-    "elbow_flex": 1.5,       # Sim moves less than physical
+    "shoulder_pan": 1.0,     # Direct mapping (testing for vibration issue)
+    "shoulder_lift": 1.0,    # Sim moves less than physical
+    "elbow_flex": 1.0,       # Increased scale for larger range
     "wrist_flex": 0.9,       # Encoder range compensation
     "wrist_roll": 0.5,       # Encoder range compensation (0.51 rounded)
-    "gripper": 1.0,
+    "gripper": 1.2,          # Increased for more closing range
 }
 
 # Offsets (radians) - for asymmetric calibration compensation
 # Reference: lerobot_ros2/scripts/lekiwi/lekiwi_teleop_relay.py
 JOINT_OFFSETS = {
     "shoulder_pan": 0.0,
-    "shoulder_lift": 0.0,
-    "elbow_flex": 0.0,
+    "shoulder_lift": -1.55,   # More negative offset for earlier movement
+    "elbow_flex": 1.8,       # Positive offset (reversed from previous)
     "wrist_flex": 1.3,       # Asymmetric calibration compensation
     "wrist_roll": 0.0,
-    "gripper": 0.0,
+    "gripper": 0.2,
 }
 
 
@@ -147,6 +147,9 @@ def convert_arm_action_from_so101_leader(
     """
     processed_action = torch.zeros(teleop_device.env.num_envs, 6, device=teleop_device.env.device)
 
+    # Debug: track shoulder_pan values (set to True to enable)
+    debug_shoulder_pan = False
+
     for joint_name, motor_id in joint_names_to_motor_ids.items():
         # Get normalized position from leader
         normalized_pos = joint_state[joint_name]
@@ -171,6 +174,11 @@ def convert_arm_action_from_so101_leader(
 
         transformed_radius = processed_radius * inversion * scale + offset
         processed_action[:, motor_id] = transformed_radius
+
+        # Debug output for shoulder_pan
+        if joint_name == "shoulder_pan" and debug_shoulder_pan:
+            print(f"[DEBUG] shoulder_pan: norm={normalized_pos:.2f}, rad={processed_radius:.3f}, "
+                  f"inv={inversion}, scale={scale}, offset={offset}, final={transformed_radius:.3f}")
 
     return processed_action
 
@@ -289,11 +297,11 @@ def preprocess_lekiwi_device_action(action: dict[str, Any], teleop_device) -> to
         )
 
         # Process base velocity from keyboard
-        base_velocity = torch.tensor(
+        base_velocity = torch.as_tensor(
             action["base_velocity"],
             device=teleop_device.env.device,
             dtype=torch.float32,
-        )
+        ).clone()
         base_velocity = base_velocity.unsqueeze(0).expand(teleop_device.env.num_envs, -1)
 
         # Convert base velocity to wheel velocities

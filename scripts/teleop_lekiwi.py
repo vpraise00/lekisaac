@@ -81,23 +81,31 @@ class RateLimiter:
 
 
 def manual_terminate(env: ManagerBasedRLEnv, success: bool):
-    """Manually trigger episode termination."""
+    """Manually trigger episode termination and mark success/failure."""
     if hasattr(env, "termination_manager"):
-        if success:
-            env.termination_manager.set_term_cfg(
-                "success",
-                TerminationTermCfg(
-                    func=lambda env: torch.ones(env.num_envs, dtype=torch.bool, device=env.device)
-                ),
-            )
-        else:
-            env.termination_manager.set_term_cfg(
-                "success",
-                TerminationTermCfg(
-                    func=lambda env: torch.zeros(env.num_envs, dtype=torch.bool, device=env.device)
-                ),
-            )
-        env.termination_manager.compute()
+        # Try to set success termination term
+        try:
+            if success:
+                env.termination_manager.set_term_cfg(
+                    "success",
+                    TerminationTermCfg(
+                        func=lambda env: torch.ones(env.num_envs, dtype=torch.bool, device=env.device)
+                    ),
+                )
+            else:
+                env.termination_manager.set_term_cfg(
+                    "success",
+                    TerminationTermCfg(
+                        func=lambda env: torch.zeros(env.num_envs, dtype=torch.bool, device=env.device)
+                    ),
+                )
+            env.termination_manager.compute()
+        except ValueError:
+            # Term doesn't exist, just store in extras
+            pass
+
+    # Store success flag in extras for recorder to capture
+    env.extras["episode_success"] = success
 
 
 def main():
@@ -106,13 +114,17 @@ def main():
     # Create output directory if recording
     output_dir = os.path.dirname(args_cli.dataset_file)
     output_file_name = os.path.splitext(os.path.basename(args_cli.dataset_file))[0]
-    if not os.path.exists(output_dir):
+    if output_dir and not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
     # Parse environment configuration
     env_cfg = parse_env_cfg(args_cli.task, device=args_cli.device, num_envs=args_cli.num_envs)
     env_cfg.use_teleop_device("lekiwi")
     env_cfg.seed = args_cli.seed if args_cli.seed is not None else int(time.time())
+
+    # Enable manual termination mode
+    if hasattr(env_cfg, "manual_terminate"):
+        env_cfg.manual_terminate = True
 
     if args_cli.quality:
         env_cfg.sim.render.antialiasing_mode = "FXAA"
@@ -139,9 +151,6 @@ def main():
         env_cfg.recorders.dataset_export_dir_path = output_dir
         env_cfg.recorders.dataset_filename = output_file_name
 
-        if not hasattr(env_cfg.terminations, "success"):
-            env_cfg.terminations.success = None
-
     # Create environment
     env = gym.make(args_cli.task, cfg=env_cfg)
     # Get unwrapped environment for direct access to IsaacLab internals
@@ -165,9 +174,22 @@ def main():
         base_angular_speed=args_cli.base_angular_speed,
     )
 
-    # Add callbacks for episode termination
-    teleop_device.add_callback("R", lambda: manual_terminate(unwrapped_env, success=False))
-    teleop_device.add_callback("N", lambda: manual_terminate(unwrapped_env, success=True))
+    # Flags for handling reset in main loop (leisaac pattern)
+    should_reset_recording_instance = False
+    should_reset_task_success = False
+
+    def reset_recording_instance():
+        nonlocal should_reset_recording_instance
+        should_reset_recording_instance = True
+
+    def reset_task_success():
+        nonlocal should_reset_task_success
+        should_reset_task_success = True
+        reset_recording_instance()  # Also trigger reset
+
+    # Add callbacks - just set flags, handle in main loop
+    teleop_device.add_callback("R", reset_recording_instance)
+    teleop_device.add_callback("N", reset_task_success)
 
     print(teleop_device)
 
@@ -176,38 +198,71 @@ def main():
 
     # Reset environment
     env.reset()
+    teleop_device.reset()
+
+    # Track recording state and demo count
+    resume_recorded_demo_count = 0
+    if args_cli.record and args_cli.resume:
+        resume_recorded_demo_count = unwrapped_env.recorder_manager._dataset_file_handler.get_num_episodes()
+        print(f"[INFO] Resume recording from existing dataset file with {resume_recorded_demo_count} demonstrations.")
+    current_recorded_demo_count = resume_recorded_demo_count
+    start_record_state = False
 
     # Main teleoperation loop
     print("\n[INFO] Press 'B' to start teleoperation...")
 
     while simulation_app.is_running():
-        # Get action from device
-        action = teleop_device.advance()
+        with torch.inference_mode():
+            # Get action from device
+            actions = teleop_device.advance()
 
-        if action is None:
-            # Not started yet - just render
-            unwrapped_env.sim.render()
-            continue
+            # Handle task success (N key pressed)
+            if should_reset_task_success:
+                print("[INFO] Task Success!")
+                should_reset_task_success = False
+                if args_cli.record:
+                    manual_terminate(unwrapped_env, True)
 
-        if isinstance(action, dict):
-            # Reset requested
-            if action.get("reset", False):
+            # Handle reset (R key pressed, or after N key)
+            if should_reset_recording_instance:
                 env.reset()
                 teleop_device.reset()
-                continue
+                should_reset_recording_instance = False
 
-        # Step environment with action
-        env.step(action)
+                if start_record_state:
+                    if args_cli.record:
+                        print("[INFO] Stop Recording!")
+                    start_record_state = False
 
-        # Enforce stepping rate
-        rate_limiter.sleep(unwrapped_env)
+                if args_cli.record:
+                    manual_terminate(unwrapped_env, False)
 
-        # Check if we should stop (reached demo limit)
-        if args_cli.record and args_cli.num_demos > 0:
-            if hasattr(unwrapped_env, "recorder_manager"):
-                if unwrapped_env.recorder_manager.should_stop:
-                    print(f"\n[INFO] Collected {args_cli.num_demos} demonstrations. Stopping.")
-                    break
+                # Print demo count if it changed
+                if args_cli.record:
+                    new_count = unwrapped_env.recorder_manager.exported_successful_episode_count + resume_recorded_demo_count
+                    if new_count > current_recorded_demo_count:
+                        current_recorded_demo_count = new_count
+                        print(f"[INFO] Recorded {current_recorded_demo_count} successful demonstrations.")
+
+                    # Check if we reached the target number of demos
+                    if args_cli.num_demos > 0 and new_count >= args_cli.num_demos:
+                        print(f"[INFO] All {args_cli.num_demos} demonstrations recorded. Exiting.")
+                        break
+
+            elif actions is None or isinstance(actions, dict):
+                # Not started yet or reset dict returned - just render
+                unwrapped_env.sim.render()
+                continue  # Skip rate limiter when not stepping
+
+            else:
+                # Started - step environment with tensor action
+                if not start_record_state:
+                    if args_cli.record:
+                        print("[INFO] Start Recording!")
+                    start_record_state = True
+                env.step(actions)
+                # Enforce stepping rate only when stepping
+                rate_limiter.sleep(unwrapped_env)
 
     # Cleanup
     teleop_device.disconnect()

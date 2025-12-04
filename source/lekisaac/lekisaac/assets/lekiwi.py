@@ -52,7 +52,7 @@ LEKIWI_CFG = ArticulationCfg(
             collision_enabled=True,
         ),
         articulation_props=sim_utils.ArticulationRootPropertiesCfg(
-            enabled_self_collisions=True,
+            enabled_self_collisions=False,  # Disabled to test shoulder_pan vibration
             solver_position_iteration_count=8,  # Increased for better wheel contact
             solver_velocity_iteration_count=4,
             fix_root_link=False,  # Mobile base - unfixed root
