@@ -151,8 +151,8 @@ def main():
         env_cfg.recorders.dataset_export_dir_path = output_dir
         env_cfg.recorders.dataset_filename = output_file_name
     else:
-        # Disable recording to prevent memory accumulation
-        env_cfg.recorders.dataset_export_mode = DatasetExportMode.EXPORT_NONE
+        # Disable recording completely to prevent memory accumulation
+        env_cfg.recorders = None
 
     # Create environment
     env = gym.make(args_cli.task, cfg=env_cfg)

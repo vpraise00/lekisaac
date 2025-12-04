@@ -31,6 +31,7 @@ LEKISAAC_ASSETS_ROOT = os.path.join(os.path.dirname(__file__), "..", "..", "..",
 KITCHEN_SCENE_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "scenes", "kiwi_kitchen.usd")
 KIWI_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "objects", "Kiwi.usd")
 BOWL_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "objects", "Bowl.usd")
+TORUS_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "objects", "Torus.usd")
 
 
 @configclass
@@ -72,14 +73,13 @@ class LeKiwiKitchenSceneCfg(InteractiveSceneCfg):
     )
 
     # Graspable objects with physics enabled
-    kiwi: RigidObjectCfg = RigidObjectCfg(
-        prim_path="{ENV_REGEX_NS}/Kiwi",
+    cube: RigidObjectCfg = RigidObjectCfg(
+        prim_path="{ENV_REGEX_NS}/Cube",
         init_state=RigidObjectCfg.InitialStateCfg(
             pos=(-1.22245, 0.14609, 0.05),
         ),
-        spawn=sim_utils.UsdFileCfg(
-            usd_path=KIWI_USD,
-            scale=(0.01, 0.01, 0.01),
+        spawn=sim_utils.CuboidCfg(
+            size=(0.06, 0.04, 0.04),
             rigid_props=sim_utils.RigidBodyPropertiesCfg(
                 disable_gravity=False,
                 kinematic_enabled=False,
@@ -90,6 +90,12 @@ class LeKiwiKitchenSceneCfg(InteractiveSceneCfg):
                 contact_offset=0.005,
                 rest_offset=0.0,
             ),
+            physics_material=sim_utils.RigidBodyMaterialCfg(
+                static_friction=100.0,
+                dynamic_friction=100.0,
+                restitution=0.0,
+            ),
+            visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(1.0, 0.0, 0.0)),
         ),
     )
 
