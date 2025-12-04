@@ -136,7 +136,7 @@ def main():
     if hasattr(env_cfg.terminations, "success"):
         env_cfg.terminations.success = None
 
-    # Configure recorder if recording
+    # Configure recorder
     if args_cli.record:
         if args_cli.resume:
             env_cfg.recorders.dataset_export_mode = EnhanceDatasetExportMode.EXPORT_ALL_RESUME
@@ -150,6 +150,9 @@ def main():
             )
         env_cfg.recorders.dataset_export_dir_path = output_dir
         env_cfg.recorders.dataset_filename = output_file_name
+    else:
+        # Disable recording to prevent memory accumulation
+        env_cfg.recorders.dataset_export_mode = DatasetExportMode.EXPORT_NONE
 
     # Create environment
     env = gym.make(args_cli.task, cfg=env_cfg)
@@ -191,8 +194,6 @@ def main():
     teleop_device.add_callback("R", reset_recording_instance)
     teleop_device.add_callback("N", reset_task_success)
 
-    print(teleop_device)
-
     # Rate limiter for consistent stepping
     rate_limiter = RateLimiter(args_cli.step_hz)
 
@@ -208,8 +209,9 @@ def main():
     current_recorded_demo_count = resume_recorded_demo_count
     start_record_state = False
 
-    # Main teleoperation loop
-    print("\n[INFO] Press 'B' to start teleoperation...")
+    # Print device controls after environment initialization (so it appears after PhysX warnings)
+    print(teleop_device)
+    print("[INFO] Press 'B' to start teleoperation...")
 
     while simulation_app.is_running():
         with torch.inference_mode():
