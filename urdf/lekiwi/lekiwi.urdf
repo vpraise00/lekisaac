@@ -3,7 +3,7 @@
     <link name="base_plate_layer1_v5">
         <inertial>
             <origin xyz="-4.730687660675253e-15 -2.7155537377808555e-05 -0.0035000000000000005" rpy="0.0 0.0 0.0" />
-            <mass value="10.0" />
+            <mass value="150.0" />
             <inertia ixx="0.005637109888809055" iyy="0.005628440956780792" izz="0.0112496514690387" ixy="1.3447333053523504e-16" iyz="2.6469779601696886e-23" ixz="1.7848833522297417e-20" />
         </inertial>
         <visual name="base_plate_layer1_v5_visual">

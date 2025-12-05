@@ -215,28 +215,28 @@ def convert_base_velocity_to_wheel_velocities(
 
     r = wheel_radius
     R = base_radius
-    sqrt3 = math.sqrt(3)
+
+    # Motion-specific scale factors
+    FORWARD_SCALE = 3.0   # W/S: 1.5x
+    STRAFE_SCALE = 1.0    # A/D: reduced to prevent base lift
+    ROTATE_SCALE = 6.0    # Z/X: 6x
 
     # === Forward/Backward (W/S) ===
-    # Front wheels rotate in opposite directions, back wheel minimal
-    # For forward (vx > 0): left wheel CCW, right wheel CW
-    forward_left = vx / r * (2 / sqrt3)
-    forward_right = -vx / r * (2 / sqrt3)
+    # Direct velocity without kinematic factor (user request: no 2/sqrt3)
+    forward_left = vx / r * FORWARD_SCALE
+    forward_right = -vx / r * FORWARD_SCALE
     forward_back = 0.0
 
     # === Strafe Left/Right (A/D) ===
-    # All wheels rotate same direction
-    # Ratio: back = 1, front = 2/√3 ≈ 1.155
-    # For left strafe (vy > 0): all wheels rotate to push robot left
-    strafe_left = -vy / r * (2 / sqrt3)
-    strafe_right = -vy / r * (2 / sqrt3)
-    strafe_back = -vy / r * 1.0
+    # 60° angle geometry: front wheels at 60° from Y-axis, back wheel aligned with Y
+    # Front wheel compensation: 1/cos(60°) = 2.0, Back wheel: 1.0
+    strafe_left = -vy / r * 2.0 * STRAFE_SCALE
+    strafe_right = -vy / r * 2.0 * STRAFE_SCALE
+    strafe_back = -vy / r * 1.0 * STRAFE_SCALE
 
     # === Rotation (Z/X) ===
-    # All wheels rotate same direction uniformly
-    # Z (wz > 0, CCW robot rotation) -> all wheels CW
-    # X (wz < 0, CW robot rotation) -> all wheels CCW
-    rotate_all = wz * R / r
+    # 6x speed (3배 증가)
+    rotate_all = wz * R / r * ROTATE_SCALE
 
     # Combine all components
     # Front wheels need inverted rotation direction
@@ -262,11 +262,7 @@ def convert_base_velocity_to_wheel_velocities(
     #   - Right front (Revolute_60, axis 0,0,-1): no inversion
     omega_back = -omega_back  # Back wheel axis has negative X component
 
-    # Velocity scale factor for faster wheel response
-    WHEEL_VELOCITY_SCALE = 3.0
-    omega_left = omega_left * WHEEL_VELOCITY_SCALE
-    omega_right = omega_right * WHEEL_VELOCITY_SCALE
-    omega_back = omega_back * WHEEL_VELOCITY_SCALE
+    # Note: scales are applied per-motion above (FORWARD_SCALE, STRAFE_SCALE, ROTATE_SCALE)
 
     # Stack into output tensor to match action config order
     # Action config: [Revolute_64, Revolute_62, Revolute_60]
