@@ -12,9 +12,9 @@ from isaaclab.assets.articulation import ArticulationCfg
 from lekisaac.utils.constant import URDF_ROOT
 
 
-# LeKiwi USD asset path (to be created from URDF conversion)
-# For now, we use a placeholder path - users need to convert URDF to USD
+# LeKiwi USD asset paths (to be created from URDF conversion)
 LEKIWI_ASSET_PATH = Path(URDF_ROOT) / "lekiwi" / "lekiwi.usd"
+LEKIWI_AUGMENTED_ASSET_PATH = Path(URDF_ROOT) / "lekiwi" / "lekiwi_elevated.usd"  # 0.8m taller
 
 # Joint name mapping from USD (actual names from URDF conversion)
 # Arm joints:
@@ -154,3 +154,73 @@ LEKIWI_BASE_VELOCITY_LIMITS = {
     "linear_y": (-0.5, 0.5),   # Left/right strafe (omni-directional)
     "angular_z": (-1.0, 1.0),  # Rotation
 }
+
+
+# LeKiwi Augmented configuration (0.8m taller arm for elevated tasks)
+# Uses lekiwi_augmented.usd with modified Rigid_21 joint (z: -0.05 -> -0.85)
+LEKIWI_AUGMENTED_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=str(LEKIWI_AUGMENTED_ASSET_PATH),
+        rigid_props=sim_utils.RigidBodyPropertiesCfg(disable_gravity=False),
+        collision_props=sim_utils.CollisionPropertiesCfg(
+            collision_enabled=True,
+            contact_offset=0.005,
+            rest_offset=0.0,
+        ),
+        articulation_props=sim_utils.ArticulationRootPropertiesCfg(
+            enabled_self_collisions=False,
+            solver_position_iteration_count=16,
+            solver_velocity_iteration_count=8,
+            fix_root_link=False,
+        ),
+    ),
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.05),  # Same base height, arm is 0.8m taller internally
+        rot=(1.0, 0.0, 0.0, 0.0),
+        joint_pos={
+            USD_JOINT_NAMES["shoulder_pan"]: 0.0,
+            USD_JOINT_NAMES["shoulder_lift"]: 0.0,
+            USD_JOINT_NAMES["elbow_flex"]: 0.0,
+            USD_JOINT_NAMES["wrist_flex"]: 0.0,
+            USD_JOINT_NAMES["wrist_roll"]: 0.0,
+            USD_JOINT_NAMES["gripper"]: 0.0,
+            USD_JOINT_NAMES["wheel_left"]: 0.0,
+            USD_JOINT_NAMES["wheel_right"]: 0.0,
+            USD_JOINT_NAMES["wheel_back"]: 0.0,
+        },
+    ),
+    actuators={
+        "sts3215-gripper": ImplicitActuatorCfg(
+            joint_names_expr=[USD_JOINT_NAMES["gripper"]],
+            effort_limit_sim=10,
+            velocity_limit_sim=10,
+            stiffness=17.8,
+            damping=5.0,
+        ),
+        "sts3215-arm": ImplicitActuatorCfg(
+            joint_names_expr=[
+                USD_JOINT_NAMES["shoulder_pan"],
+                USD_JOINT_NAMES["shoulder_lift"],
+                USD_JOINT_NAMES["elbow_flex"],
+                USD_JOINT_NAMES["wrist_flex"],
+                USD_JOINT_NAMES["wrist_roll"],
+            ],
+            effort_limit_sim=10,
+            velocity_limit_sim=10,
+            stiffness=17.8,
+            damping=5.0,
+        ),
+        "wheel-motors": ImplicitActuatorCfg(
+            joint_names_expr=[
+                USD_JOINT_NAMES["wheel_left"],
+                USD_JOINT_NAMES["wheel_right"],
+                USD_JOINT_NAMES["wheel_back"],
+            ],
+            effort_limit_sim=100000,
+            velocity_limit_sim=50,
+            stiffness=0.0,
+            damping=5e5,
+        ),
+    },
+    soft_joint_pos_limit_factor=1.0,
+)

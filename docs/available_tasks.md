@@ -8,6 +8,7 @@ This document lists all available task environments in LeKisaac.
 |---------|-------------|-------|
 | `LeKisaac-LeKiwi-Teleop-v0` | Basic teleoperation environment | Ground plane + test cube |
 | `LeKisaac-LeKiwi-Kitchen-v0` | Kitchen environment for manipulation | Kitchen scene with furniture |
+| `LeKisaac-LeKiwi-ToolAugmented-v0` | Elevated arm (0.8m taller) for high surface tasks | Kitchen + elevated cube |
 
 ---
 
@@ -73,6 +74,43 @@ python lekisaac/scripts/teleop_lekiwi.py \
     --port=/dev/ttyACM0 \
     --device=cuda \
     --quality
+```
+
+---
+
+## LeKisaac-LeKiwi-ToolAugmented-v0
+
+Environment with an elevated LeKiwi robot (0.8m taller arm) for tasks on high surfaces like tables and counters.
+
+### Robot Configuration
+- Uses `lekiwi_augmented.usd` with modified URDF
+- Arm is 0.8m higher than standard LeKiwi
+- Same base and wheel configuration as standard
+
+### Scene Contents
+- Kitchen scene (`kiwi_kitchen.usd`) - visual environment
+- Green cube at 1m height for elevated manipulation practice
+- Dome lighting
+
+### Quick Start
+
+```bash
+# First, convert the augmented URDF to USD (one-time)
+python lekisaac/scripts/convert_urdf_to_usd.py --augmented-only
+
+# Basic teleoperation
+python lekisaac/scripts/teleop_lekiwi.py \
+    --task=LeKisaac-LeKiwi-ToolAugmented-v0 \
+    --port=/dev/ttyACM0 \
+    --device=cuda
+
+# With recording
+python lekisaac/scripts/teleop_lekiwi.py \
+    --task=LeKisaac-LeKiwi-ToolAugmented-v0 \
+    --port=/dev/ttyACM0 \
+    --record \
+    --dataset_file=./datasets/tool_augmented_demos.hdf5 \
+    --num_demos=50
 ```
 
 ---
