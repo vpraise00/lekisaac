@@ -130,13 +130,24 @@ def main():
         env_cfg.sim.render.antialiasing_mode = "FXAA"
         env_cfg.sim.render.rendering_mode = "quality"
 
-    # Disable timeout and success termination for teleoperation
+    # Disable timeout for teleoperation
     if hasattr(env_cfg.terminations, "time_out"):
         env_cfg.terminations.time_out = None
-    if hasattr(env_cfg.terminations, "success"):
-        env_cfg.terminations.success = None
 
     # Configure recorder
+    if args_cli.record:
+        # For recording: set success to return False by default (will be set True on 'N' key)
+        if not hasattr(env_cfg.terminations, "success"):
+            setattr(env_cfg.terminations, "success", None)
+        env_cfg.terminations.success = TerminationTermCfg(
+            func=lambda env: torch.zeros(env.num_envs, dtype=torch.bool, device=env.device)
+        )
+    else:
+        # For non-recording: disable success termination
+        if hasattr(env_cfg.terminations, "success"):
+            env_cfg.terminations.success = None
+
+    # Configure recorder file settings
     if args_cli.record:
         if args_cli.resume:
             env_cfg.recorders.dataset_export_mode = EnhanceDatasetExportMode.EXPORT_ALL_RESUME
@@ -161,12 +172,11 @@ def main():
 
     # Replace recorder manager with streaming version if recording
     if args_cli.record:
-        recorder_manager = StreamingRecorderManager(
-            env_cfg.recorders,
-            unwrapped_env,
-        )
-        recorder_manager.flush_steps = 30
-        unwrapped_env.recorder_manager = recorder_manager
+        # Delete existing recorder manager and create streaming version (leisaac pattern)
+        del unwrapped_env.recorder_manager
+        unwrapped_env.recorder_manager = StreamingRecorderManager(env_cfg.recorders, unwrapped_env)
+        unwrapped_env.recorder_manager.flush_steps = 100
+        unwrapped_env.recorder_manager.compression = 'lzf'
 
     # Create LeKiwi teleoperation device
     teleop_device = LeKiwiDevice(
