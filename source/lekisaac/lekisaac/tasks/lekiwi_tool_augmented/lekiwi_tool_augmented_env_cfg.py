@@ -33,6 +33,7 @@ from . import mdp
 # Asset paths
 LEKISAAC_ASSETS_ROOT = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "..", "assets")
 KITCHEN_SCENE_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "scenes", "kiwi_kitchen.usd")
+PAN_A_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "objects", "pan_A.usd")
 
 
 @configclass
@@ -40,19 +41,20 @@ class LeKiwiToolAugmentedSceneCfg(InteractiveSceneCfg):
     """Scene configuration for LeKiwi tool augmented environment."""
 
     # Invisible ground plane for robot collision
+    # Friction = 0 for velocity-based holonomic control (wheel rotation is visual only)
     ground = AssetBaseCfg(
         prim_path="/World/defaultGroundPlane",
         spawn=sim_utils.GroundPlaneCfg(
             physics_material=sim_utils.RigidBodyMaterialCfg(
-                static_friction=1.0,
-                dynamic_friction=1.0,
+                static_friction=0.0,
+                dynamic_friction=0.0,
                 restitution=0.0,
             ),
             visible=False,
         ),
     )
 
-    # Kitchen scene (visual only)
+    # Kitchen scene with collision enabled for counter/table surfaces
     kitchen = AssetBaseCfg(
         prim_path="/World/Kitchen",
         init_state=AssetBaseCfg.InitialStateCfg(
@@ -65,35 +67,31 @@ class LeKiwiToolAugmentedSceneCfg(InteractiveSceneCfg):
                 kinematic_enabled=True,
             ),
             collision_props=sim_utils.CollisionPropertiesCfg(
-                collision_enabled=False,
+                collision_enabled=True,
             ),
         ),
     )
 
-    # Target object on elevated surface (e.g., table at ~1m height)
-    cube: RigidObjectCfg = RigidObjectCfg(
-        prim_path="{ENV_REGEX_NS}/Cube",
+    # Pan on kitchen counter surface
+    pan: RigidObjectCfg = RigidObjectCfg(
+        prim_path="{ENV_REGEX_NS}/Pan",
         init_state=RigidObjectCfg.InitialStateCfg(
-            pos=(-0.5, 0.0, 1.0),  # On a surface at 1m height
+            pos=(-0.97, 0.91, 0.95),  # On kitchen counter
         ),
-        spawn=sim_utils.CuboidCfg(
-            size=(0.06, 0.04, 0.04),
+        spawn=sim_utils.UsdFileCfg(
+            usd_path=PAN_A_USD,
+            scale=(0.01, 0.01, 0.01),
             rigid_props=sim_utils.RigidBodyPropertiesCfg(
                 disable_gravity=False,
                 kinematic_enabled=False,
+                max_depenetration_velocity=1.0,
             ),
-            mass_props=sim_utils.MassPropertiesCfg(mass=0.1),
+            mass_props=sim_utils.MassPropertiesCfg(mass=0.3),
             collision_props=sim_utils.CollisionPropertiesCfg(
                 collision_enabled=True,
                 contact_offset=0.005,
                 rest_offset=0.0,
             ),
-            physics_material=sim_utils.RigidBodyMaterialCfg(
-                static_friction=100.0,
-                dynamic_friction=100.0,
-                restitution=0.0,
-            ),
-            visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.0, 1.0, 0.0)),  # Green
         ),
     )
 
@@ -112,13 +110,12 @@ class LeKiwiToolAugmentedSceneCfg(InteractiveSceneCfg):
         ],
     )
 
-    # Wrist camera
+    # Wrist camera (attached to Camera_Model_v3_1 - wrist camera model)
     wrist: TiledCameraCfg = TiledCameraCfg(
         prim_path="{ENV_REGEX_NS}/Robot/LeKiwi/Camera_Model_v3_1/wrist_camera",
         offset=TiledCameraCfg.OffsetCfg(
             pos=(0.0, 0.0, 0.0),
-            rot=(-0.0653, -0.8586, -0.113, 0.4957),
-            convention="ros",
+            rot=(1.0, 0.0, 0.0, 0.0),
         ),
         data_types=["rgb"],
         spawn=sim_utils.PinholeCameraCfg(
@@ -133,13 +130,12 @@ class LeKiwiToolAugmentedSceneCfg(InteractiveSceneCfg):
         update_period=1 / 30.0,
     )
 
-    # Base camera
+    # Base camera (attached to Camera_Model_v3 - base camera model)
     base: TiledCameraCfg = TiledCameraCfg(
         prim_path="{ENV_REGEX_NS}/Robot/LeKiwi/Camera_Model_v3/base_camera",
         offset=TiledCameraCfg.OffsetCfg(
-            pos=(-0.01, 0.01, 0.0),
-            rot=(0.4545, 0.5417, -0.5417, 0.4545),
-            convention="ros",
+            pos=(0.0, 0.0, 0.0),
+            rot=(1.0, 0.0, 0.0, 0.0),
         ),
         data_types=["rgb"],
         spawn=sim_utils.PinholeCameraCfg(
@@ -246,9 +242,13 @@ class LeKiwiToolAugmentedEnvCfg(ManagerBasedRLEnvCfg):
         self.viewer.eye = (-2.0, -1.0, 2.0)
         self.viewer.lookat = (0.0, 0.0, 1.0)
 
-        # Physics settings
+        # Physics settings for stable grasping
         self.sim.physx.bounce_threshold_velocity = 0.01
         self.sim.physx.friction_correlation_distance = 0.00625
+        self.sim.physx.gpu_max_rigid_patch_count = 2**20
+        # Increase solver iterations for stable contact during grasping
+        self.sim.physx.solver_position_iteration_count = 32
+        self.sim.physx.solver_velocity_iteration_count = 16
 
     def use_teleop_device(self, teleop_device: str) -> None:
         """Configure environment for specific teleoperation device."""

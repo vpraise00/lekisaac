@@ -61,21 +61,18 @@ class LeKiwiTeleopSceneCfg(InteractiveSceneCfg):
     )
 
     # Wrist camera (attached to Camera_Model_v3_1 - wrist camera model)
-    # Transform from set_lekiwi_cameras.py: translate (0, 0, 0), rotateXYZ (-15, -120, 0)
     wrist: TiledCameraCfg = TiledCameraCfg(
         prim_path="{ENV_REGEX_NS}/Robot/LeKiwi/Camera_Model_v3_1/wrist_camera",
         offset=TiledCameraCfg.OffsetCfg(
             pos=(0.0, 0.0, 0.0),
-            rot=(-0.0653, -0.8586, -0.113, 0.4957),  # XYZ Euler (-15, -120, 0) -> quaternion (xyzw)
-            convention="ros",
+            rot=(1.0, 0.0, 0.0, 0.0),
         ),
         data_types=["rgb"],
         spawn=sim_utils.PinholeCameraCfg(
-            focal_length=18.0,  # From set_lekiwi_cameras.py
+            focal_length=18.0,
             focus_distance=1.0,
-            horizontal_aperture=20.955,  # From set_lekiwi_cameras.py
+            horizontal_aperture=20.955,
             clipping_range=(0.01, 200.0),
-            lock_camera=True,
         ),
         width=640,
         height=480,
@@ -83,21 +80,18 @@ class LeKiwiTeleopSceneCfg(InteractiveSceneCfg):
     )
 
     # Base camera (attached to Camera_Model_v3 - base camera model)
-    # Transform from set_lekiwi_cameras.py: translate (-0.01, 0.01, 0), rotateXYZ (90, 100, 0)
     base: TiledCameraCfg = TiledCameraCfg(
         prim_path="{ENV_REGEX_NS}/Robot/LeKiwi/Camera_Model_v3/base_camera",
         offset=TiledCameraCfg.OffsetCfg(
-            pos=(-0.01, 0.01, 0.0),
-            rot=(0.4545, 0.5417, -0.5417, 0.4545),  # XYZ Euler (90, 100, 0) -> quaternion (xyzw)
-            convention="ros",
+            pos=(0.0, 0.0, 0.0),
+            rot=(1.0, 0.0, 0.0, 0.0),
         ),
         data_types=["rgb"],
         spawn=sim_utils.PinholeCameraCfg(
-            focal_length=18.0,  # From set_lekiwi_cameras.py
+            focal_length=18.0,
             focus_distance=1.0,
-            horizontal_aperture=20.955,  # From set_lekiwi_cameras.py
+            horizontal_aperture=20.955,
             clipping_range=(0.01, 200.0),
-            lock_camera=True,
         ),
         width=640,
         height=480,

@@ -137,13 +137,12 @@ class LeKiwiKitchenSceneCfg(InteractiveSceneCfg):
         ],
     )
 
-    # Wrist camera
+    # Wrist camera (attached to Camera_Model_v3_1 - wrist camera model)
     wrist: TiledCameraCfg = TiledCameraCfg(
         prim_path="{ENV_REGEX_NS}/Robot/LeKiwi/Camera_Model_v3_1/wrist_camera",
         offset=TiledCameraCfg.OffsetCfg(
             pos=(0.0, 0.0, 0.0),
-            rot=(-0.0653, -0.8586, -0.113, 0.4957),
-            convention="ros",
+            rot=(1.0, 0.0, 0.0, 0.0),
         ),
         data_types=["rgb"],
         spawn=sim_utils.PinholeCameraCfg(
@@ -158,13 +157,12 @@ class LeKiwiKitchenSceneCfg(InteractiveSceneCfg):
         update_period=1 / 30.0,
     )
 
-    # Base camera
+    # Base camera (attached to Camera_Model_v3 - base camera model)
     base: TiledCameraCfg = TiledCameraCfg(
         prim_path="{ENV_REGEX_NS}/Robot/LeKiwi/Camera_Model_v3/base_camera",
         offset=TiledCameraCfg.OffsetCfg(
-            pos=(-0.01, 0.01, 0.0),
-            rot=(0.4545, 0.5417, -0.5417, 0.4545),
-            convention="ros",
+            pos=(0.0, 0.0, 0.0),
+            rot=(1.0, 0.0, 0.0, 0.0),
         ),
         data_types=["rgb"],
         spawn=sim_utils.PinholeCameraCfg(
