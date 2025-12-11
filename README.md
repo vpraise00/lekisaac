@@ -88,10 +88,11 @@ This guide covers:
 
 ## Documentation
 
-- [Installation Guide](docs/installation.md)
-- [LeKiwi Robot Setup](docs/lekiwi_robot.md)
-- [Teleoperation Guide](docs/teleoperation.md)
-- [Data Collection](docs/data_collection.md)
+- [Installation Guide](docs/installation.md) - Setting up lekisaac with IsaacLab and leisaac
+- [LeKiwi Robot Setup](docs/lekiwi_robot.md) - Hardware configuration and URDF details
+- [Teleoperation Guide](docs/teleoperation.md) - Controls and teleoperation workflow
+- [Data Collection & HuggingFace Upload](docs/data_collection.md) - **Complete guide**: Recording demos, converting to LeRobot format, uploading to HuggingFace Hub
+- [Available Tasks](docs/available_tasks.md) - List of registered task environments
 
 ## Project Structure
 

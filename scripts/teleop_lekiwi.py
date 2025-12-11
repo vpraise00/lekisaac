@@ -161,12 +161,12 @@ def main():
 
     # Replace recorder manager with streaming version if recording
     if args_cli.record:
-        unwrapped_env.recorder_manager = StreamingRecorderManager(
+        recorder_manager = StreamingRecorderManager(
             env_cfg.recorders,
             unwrapped_env,
-            flush_steps=30,
-            episode_stop_condition=args_cli.num_demos if args_cli.num_demos > 0 else None,
         )
+        recorder_manager.flush_steps = 30
+        unwrapped_env.recorder_manager = recorder_manager
 
     # Create LeKiwi teleoperation device
     teleop_device = LeKiwiDevice(
