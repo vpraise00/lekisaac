@@ -83,11 +83,11 @@ LEKIWI_CFG = ArticulationCfg(
             joint_names_expr=[USD_JOINT_NAMES["gripper"]],
             effort_limit_sim=10,
             velocity_limit_sim=10,
-            stiffness=17.8,
-            damping=5.0,  # Increased from 0.60 to reduce oscillation
+            stiffness=40.0,  # Increased from 17.8 to resist inertial forces
+            damping=8.0,     # Increased from 5.0 to reduce oscillation
         ),
         # Arm actuators (5 DOF)
-        # Higher damping reduces oscillation/vibration when joints move
+        # Higher stiffness/damping to resist inertial forces during base movement
         "sts3215-arm": ImplicitActuatorCfg(
             joint_names_expr=[
                 USD_JOINT_NAMES["shoulder_pan"],
@@ -98,8 +98,8 @@ LEKIWI_CFG = ArticulationCfg(
             ],
             effort_limit_sim=10,
             velocity_limit_sim=10,
-            stiffness=17.8,
-            damping=5.0,  # Increased from 0.60 to reduce oscillation
+            stiffness=40.0,  # Increased from 17.8 to resist inertial forces
+            damping=8.0,     # Increased from 5.0 to reduce oscillation
         ),
         # Wheel actuators for omni-directional movement
         # For velocity control: stiffness=0, damping must be VERY HIGH
@@ -194,8 +194,8 @@ LEKIWI_AUGMENTED_CFG = ArticulationCfg(
             joint_names_expr=[USD_JOINT_NAMES["gripper"]],
             effort_limit_sim=10,
             velocity_limit_sim=10,
-            stiffness=17.8,
-            damping=5.0,
+            stiffness=40.0,  # Increased from 17.8 to resist inertial forces
+            damping=8.0,     # Increased from 5.0 to reduce oscillation
         ),
         "sts3215-arm": ImplicitActuatorCfg(
             joint_names_expr=[
@@ -207,8 +207,8 @@ LEKIWI_AUGMENTED_CFG = ArticulationCfg(
             ],
             effort_limit_sim=10,
             velocity_limit_sim=10,
-            stiffness=17.8,
-            damping=5.0,
+            stiffness=40.0,  # Increased from 17.8 to resist inertial forces
+            damping=8.0,     # Increased from 5.0 to reduce oscillation
         ),
         "wheel-motors": ImplicitActuatorCfg(
             joint_names_expr=[

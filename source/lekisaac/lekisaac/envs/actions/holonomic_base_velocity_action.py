@@ -20,7 +20,7 @@ from typing import TYPE_CHECKING
 
 from isaaclab.envs.mdp.actions import ActionTerm, ActionTermCfg
 from isaaclab.utils.configclass import configclass
-from isaaclab.utils.math import quat_apply_inverse
+from isaaclab.utils.math import quat_apply
 
 if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedEnv
@@ -97,7 +97,7 @@ class HolonomicBaseVelocityAction(ActionTerm):
         local_lin_vel[:, 1] = vy_robot
         local_lin_vel[:, 2] = 0.0
 
-        world_lin_vel = quat_apply_inverse(root_quat, local_lin_vel)
+        world_lin_vel = quat_apply(root_quat, local_lin_vel)
 
         # Set root velocity
         self._root_velocity[:, 0:3] = world_lin_vel  # Linear velocity (world frame)
@@ -134,9 +134,10 @@ class HolonomicBaseVelocityAction(ActionTerm):
 
         # Strafe Left/Right (A/D)
         # 60° geometry: back wheel = 1.0, front wheels = sqrt(3)/2 ≈ 0.866
+        # Back wheel aligned with strafe direction, front wheels at 60° angle
+        strafe_back = -vy / r * 1.0 * STRAFE_SCALE
         strafe_left = -vy / r * (math.sqrt(3) / 2) * STRAFE_SCALE
         strafe_right = -vy / r * (math.sqrt(3) / 2) * STRAFE_SCALE
-        strafe_back = -vy / r * 1.0 * STRAFE_SCALE
 
         # Rotation (Z/X)
         rotate_all = wz * R / r * ROTATE_SCALE
