@@ -39,12 +39,13 @@ class LeKiwiKitchenSceneCfg(InteractiveSceneCfg):
     """Scene configuration for LeKiwi in kitchen environment."""
 
     # Invisible ground plane for robot collision
+    # Friction = 0 for velocity-based holonomic control (wheel rotation is visual only)
     ground = AssetBaseCfg(
         prim_path="/World/defaultGroundPlane",
         spawn=sim_utils.GroundPlaneCfg(
             physics_material=sim_utils.RigidBodyMaterialCfg(
-                static_friction=1.0,
-                dynamic_friction=1.0,
+                static_friction=0.0,
+                dynamic_friction=0.0,
                 restitution=0.0,
             ),
             visible=False,  # Invisible - kitchen scene provides visual floor
@@ -83,16 +84,17 @@ class LeKiwiKitchenSceneCfg(InteractiveSceneCfg):
             rigid_props=sim_utils.RigidBodyPropertiesCfg(
                 disable_gravity=False,
                 kinematic_enabled=False,
+                max_depenetration_velocity=1.0,  # Limit depenetration speed to reduce jitter
             ),
-            mass_props=sim_utils.MassPropertiesCfg(mass=0.1),
+            mass_props=sim_utils.MassPropertiesCfg(mass=0.05),  # Lighter for stable grasping
             collision_props=sim_utils.CollisionPropertiesCfg(
                 collision_enabled=True,
-                contact_offset=0.005,
+                contact_offset=0.002,  # Smaller contact offset
                 rest_offset=0.0,
             ),
             physics_material=sim_utils.RigidBodyMaterialCfg(
-                static_friction=100.0,
-                dynamic_friction=100.0,
+                static_friction=1.5,   # Reasonable friction for grip
+                dynamic_friction=1.5,
                 restitution=0.0,
             ),
             visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(1.0, 0.0, 0.0)),
@@ -273,9 +275,13 @@ class LeKiwiKitchenEnvCfg(ManagerBasedRLEnvCfg):
         self.viewer.eye = (-2.09199, -0.61881, 0.70928)
         self.viewer.lookat = (-0.05914, 0.60306, -0.08100)
 
-        # Physics settings
+        # Physics settings for stable grasping
         self.sim.physx.bounce_threshold_velocity = 0.01
         self.sim.physx.friction_correlation_distance = 0.00625
+        self.sim.physx.gpu_max_rigid_patch_count = 2**20
+        # Increase solver iterations for stable contact during grasping
+        self.sim.physx.solver_position_iteration_count = 32
+        self.sim.physx.solver_velocity_iteration_count = 16
 
     def use_teleop_device(self, teleop_device: str) -> None:
         """Configure environment for specific teleoperation device.

@@ -69,6 +69,19 @@ class RateLimiter:
                 self.last_time += self.sleep_duration
 
 
+def transfer_state_to_device(state: dict, device: str) -> dict:
+    """Recursively transfer all tensors in state dict to specified device."""
+    result = {}
+    for key, value in state.items():
+        if isinstance(value, dict):
+            result[key] = transfer_state_to_device(value, device)
+        elif isinstance(value, torch.Tensor):
+            result[key] = value.to(device)
+        else:
+            result[key] = value
+    return result
+
+
 def get_next_action(episode_data: EpisodeData, return_state: bool = False):
     if return_state:
         next_state = episode_data.get_next_state()
@@ -151,12 +164,14 @@ def main():
                         if next_episode_index is not None:
                             replayed_episode_count += 1
                             print(f"[{replayed_episode_count:4}] Loading episode #{next_episode_index} to env_{env_id}")
+                            # Load episode to CPU first to avoid GPU OOM, then transfer as needed
                             episode_data = dataset_file_handler.load_episode(
-                                episode_names[next_episode_index], env.device
+                                episode_names[next_episode_index], "cpu"
                             )
                             env_episode_data_map[env_id] = episode_data
-                            # Set initial state for the new episode
+                            # Set initial state for the new episode (transfer to GPU)
                             initial_state = episode_data.get_initial_state()
+                            initial_state = transfer_state_to_device(initial_state, env.device)
                             env.reset_to(
                                 initial_state,
                                 torch.tensor([env_id], device=env.device),
@@ -173,6 +188,9 @@ def main():
                             continue
                     else:
                         has_next_action = True
+                    # Transfer action to GPU if needed
+                    if env_next_action.device.type == "cpu":
+                        env_next_action = env_next_action.to(env.device)
                     actions[env_id] = env_next_action
                 env.step(actions)
                 rate_limiter.sleep(env)
