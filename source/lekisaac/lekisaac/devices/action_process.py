@@ -10,6 +10,7 @@ from typing import Any
 import isaaclab.envs.mdp as mdp
 
 from lekisaac.assets import USD_JOINT_NAMES
+from lekisaac.envs.actions import HolonomicBaseVelocityActionCfg
 
 
 # URDF joint limits in radians (symmetric around zero)
@@ -54,15 +55,17 @@ def init_lekiwi_action_cfg(action_cfg, device):
             joint_names=[USD_JOINT_NAMES["gripper"]],
             scale=1.0,
         )
-        # Base velocity action (for omnidirectional movement) - using USD joint names
-        action_cfg.base_velocity_action = mdp.JointVelocityActionCfg(
+        # Base velocity action (holonomic) - directly sets root velocity
+        # Ground friction = 0, so wheel rotation is visual only
+        action_cfg.base_velocity_action = HolonomicBaseVelocityActionCfg(
             asset_name="robot",
-            joint_names=[
+            wheel_joint_names=[
                 USD_JOINT_NAMES["wheel_left"],
                 USD_JOINT_NAMES["wheel_right"],
                 USD_JOINT_NAMES["wheel_back"],
             ],
-            scale=1.0,
+            wheel_radius=0.055,
+            base_radius=0.25,
         )
     else:
         action_cfg.arm_action = None
@@ -282,7 +285,7 @@ def preprocess_lekiwi_device_action(action: dict[str, Any], teleop_device) -> to
 
     Returns:
         Tensor containing the processed action for the environment.
-        Shape: (num_envs, 9) = [arm(5) + gripper(1) + base(3)]
+        Shape: (num_envs, 9) = [arm(5) + gripper(1) + base_velocity(3)]
     """
     if action.get("lekiwi_device") is not None:
         # Process arm action from SO101Leader
@@ -292,7 +295,8 @@ def preprocess_lekiwi_device_action(action: dict[str, Any], teleop_device) -> to
             teleop_device,
         )
 
-        # Process base velocity from keyboard
+        # Process base velocity from keyboard [vx, vy, wz]
+        # Pass directly to HolonomicBaseVelocityAction (no wheel conversion here)
         base_velocity = torch.as_tensor(
             action["base_velocity"],
             device=teleop_device.env.device,
@@ -300,12 +304,10 @@ def preprocess_lekiwi_device_action(action: dict[str, Any], teleop_device) -> to
         ).clone()
         base_velocity = base_velocity.unsqueeze(0).expand(teleop_device.env.num_envs, -1)
 
-        # Convert base velocity to wheel velocities
-        wheel_velocities = convert_base_velocity_to_wheel_velocities(base_velocity)
-
-        # Combine arm (6 DOF) + wheel (3 DOF) actions
+        # Combine arm (6 DOF) + base velocity (3 DOF) actions
         # arm_action[:, :5] = arm joints, arm_action[:, 5] = gripper
-        processed_action = torch.cat([arm_action, wheel_velocities], dim=-1)
+        # base_velocity[:, :3] = [vx, vy, wz] for HolonomicBaseVelocityAction
+        processed_action = torch.cat([arm_action, base_velocity], dim=-1)
 
         return processed_action
     else:

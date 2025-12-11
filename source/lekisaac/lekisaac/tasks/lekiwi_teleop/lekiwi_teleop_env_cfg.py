@@ -30,13 +30,14 @@ from . import mdp
 class LeKiwiTeleopSceneCfg(InteractiveSceneCfg):
     """Scene configuration for LeKiwi teleoperation."""
 
-    # Ground plane with high friction for wheel traction
+    # Ground plane with zero friction for velocity-based holonomic control
+    # Wheel rotation is for visual animation only; base movement is controlled directly
     ground = AssetBaseCfg(
         prim_path="/World/defaultGroundPlane",
         spawn=sim_utils.GroundPlaneCfg(
             physics_material=sim_utils.RigidBodyMaterialCfg(
-                static_friction=1.0,
-                dynamic_friction=1.0,
+                static_friction=0.0,
+                dynamic_friction=0.0,
                 restitution=0.0,
             ),
         ),
