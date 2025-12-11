@@ -245,16 +245,23 @@ Write clear, concise task descriptions for language-conditioned policies:
 Replay recorded demonstrations to verify quality:
 
 ```bash
-# Using leisaac replay script
-python scripts/environments/teleoperation/replay.py \
+python lekisaac/scripts/replay_lekiwi.py \
     --task=LeKisaac-LeKiwi-Teleop-v0 \
-    --num_envs=1 \
     --device=cuda \
-    --enable_cameras \
-    --replay_mode=action \
-    --dataset_file=./datasets/lekiwi_demos.hdf5 \
+    --dataset_file=./lekisaac/datasets/lekiwi_demos.hdf5 \
     --select_episodes 0 1 2  # Replay specific episodes
 ```
+
+### Replay Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--task` | Task environment to use | `LeKisaac-LeKiwi-Teleop-v0` |
+| `--dataset_file` | Path to HDF5 dataset file | `./datasets/lekiwi_demos.hdf5` |
+| `--select_episodes` | Episode indices to replay (space-separated) | All episodes |
+| `--replay_mode` | `action` or `state` | `action` |
+| `--num_envs` | Number of parallel environments | `1` |
+| `--step_hz` | Replay stepping rate | `60` |
 
 ## Data Statistics
 
