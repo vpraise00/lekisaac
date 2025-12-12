@@ -133,7 +133,6 @@ class HolonomicBaseVelocityAction(ActionTerm):
         forward_back = 0.0
 
         # Strafe Left/Right (A/D)
-        # 60° geometry: back wheel = 1.0, front wheels = sqrt(3)/2 ≈ 0.866
         # Back wheel aligned with strafe direction, front wheels at 60° angle
         strafe_back = -vy / r * 1.0 * STRAFE_SCALE
         strafe_left = -vy / r * (math.sqrt(3) / 2) * STRAFE_SCALE

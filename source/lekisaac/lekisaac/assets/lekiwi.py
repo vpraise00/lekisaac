@@ -12,9 +12,9 @@ from isaaclab.assets.articulation import ArticulationCfg
 from lekisaac.utils.constant import URDF_ROOT
 
 
-# LeKiwi USD asset paths (to be created from URDF conversion)
-LEKIWI_ASSET_PATH = Path(URDF_ROOT) / "lekiwi" / "lekiwi.usd"
-LEKIWI_AUGMENTED_ASSET_PATH = Path(URDF_ROOT) / "lekiwi" / "lekiwi_elevated.usd"  # 0.8m taller
+# LeKiwi USD asset paths (smooth = cylinder wheel collision for stable movement)
+LEKIWI_ASSET_PATH = Path(URDF_ROOT) / "lekiwi" / "lekiwi_smooth.usd"
+LEKIWI_AUGMENTED_ASSET_PATH = Path(URDF_ROOT) / "lekiwi" / "lekiwi_elevated_smooth.usd"  # 0.8m taller
 
 # Joint name mapping from USD (actual names from URDF conversion)
 # Arm joints:
@@ -50,8 +50,8 @@ LEKIWI_CFG = ArticulationCfg(
         rigid_props=sim_utils.RigidBodyPropertiesCfg(disable_gravity=False),
         collision_props=sim_utils.CollisionPropertiesCfg(
             collision_enabled=True,
-            contact_offset=0.005,  # 5mm - detect contacts earlier for grasping
-            rest_offset=0.0,       # No penetration at rest
+            contact_offset=0.02,   # 20mm - detect contacts earlier to prevent penetration
+            rest_offset=0.0,
         ),
         articulation_props=sim_utils.ArticulationRootPropertiesCfg(
             enabled_self_collisions=False,  # Disabled to test shoulder_pan vibration
@@ -83,8 +83,8 @@ LEKIWI_CFG = ArticulationCfg(
             joint_names_expr=[USD_JOINT_NAMES["gripper"]],
             effort_limit_sim=10,
             velocity_limit_sim=10,
-            stiffness=40.0,  # Increased from 17.8 to resist inertial forces
-            damping=8.0,     # Increased from 5.0 to reduce oscillation
+            stiffness=40.0,
+            damping=8.0,
         ),
         # Arm actuators (5 DOF)
         # Higher stiffness/damping to resist inertial forces during base movement
@@ -98,8 +98,8 @@ LEKIWI_CFG = ArticulationCfg(
             ],
             effort_limit_sim=10,
             velocity_limit_sim=10,
-            stiffness=40.0,  # Increased from 17.8 to resist inertial forces
-            damping=8.0,     # Increased from 5.0 to reduce oscillation
+            stiffness=40.0,
+            damping=8.0,
         ),
         # Wheel actuators for omni-directional movement
         # For velocity control: stiffness=0, damping must be VERY HIGH
@@ -164,7 +164,7 @@ LEKIWI_AUGMENTED_CFG = ArticulationCfg(
         rigid_props=sim_utils.RigidBodyPropertiesCfg(disable_gravity=False),
         collision_props=sim_utils.CollisionPropertiesCfg(
             collision_enabled=True,
-            contact_offset=0.005,
+            contact_offset=0.02,   # 20mm - detect contacts earlier to prevent penetration
             rest_offset=0.0,
         ),
         articulation_props=sim_utils.ArticulationRootPropertiesCfg(
@@ -194,8 +194,8 @@ LEKIWI_AUGMENTED_CFG = ArticulationCfg(
             joint_names_expr=[USD_JOINT_NAMES["gripper"]],
             effort_limit_sim=10,
             velocity_limit_sim=10,
-            stiffness=40.0,  # Increased from 17.8 to resist inertial forces
-            damping=8.0,     # Increased from 5.0 to reduce oscillation
+            stiffness=40.0,
+            damping=8.0,
         ),
         "sts3215-arm": ImplicitActuatorCfg(
             joint_names_expr=[
@@ -207,8 +207,8 @@ LEKIWI_AUGMENTED_CFG = ArticulationCfg(
             ],
             effort_limit_sim=10,
             velocity_limit_sim=10,
-            stiffness=40.0,  # Increased from 17.8 to resist inertial forces
-            damping=8.0,     # Increased from 5.0 to reduce oscillation
+            stiffness=40.0,
+            damping=8.0,
         ),
         "wheel-motors": ImplicitActuatorCfg(
             joint_names_expr=[

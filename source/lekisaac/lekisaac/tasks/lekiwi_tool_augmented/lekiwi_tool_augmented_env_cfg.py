@@ -33,7 +33,7 @@ from . import mdp
 # Asset paths
 LEKISAAC_ASSETS_ROOT = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "..", "assets")
 KITCHEN_SCENE_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "scenes", "kiwi_kitchen.usd")
-PAN_A_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "objects", "pan_A.usd")
+SPATULA_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "objects", "Spatula.usd")
 
 
 @configclass
@@ -72,24 +72,24 @@ class LeKiwiToolAugmentedSceneCfg(InteractiveSceneCfg):
         ),
     )
 
-    # Pan on kitchen counter surface
-    pan: RigidObjectCfg = RigidObjectCfg(
-        prim_path="{ENV_REGEX_NS}/Pan",
+    # Spatula on kitchen counter surface
+    spatula: RigidObjectCfg = RigidObjectCfg(
+        prim_path="{ENV_REGEX_NS}/Spatula",
         init_state=RigidObjectCfg.InitialStateCfg(
-            pos=(-0.97, 0.91, 0.95),  # On kitchen counter
+            pos=(-0.97, 0.91, 1.0),  # On kitchen counter (raised to avoid collision)
         ),
         spawn=sim_utils.UsdFileCfg(
-            usd_path=PAN_A_USD,
-            scale=(0.01, 0.01, 0.01),
+            usd_path=SPATULA_USD,
+            scale=(0.01, 0.01, 0.02),
             rigid_props=sim_utils.RigidBodyPropertiesCfg(
                 disable_gravity=False,
                 kinematic_enabled=False,
-                max_depenetration_velocity=1.0,
+                max_depenetration_velocity=0.5,  # Reduced for stable grasping
             ),
-            mass_props=sim_utils.MassPropertiesCfg(mass=0.3),
+            mass_props=sim_utils.MassPropertiesCfg(mass=0.05),  # Lighter for easier grasping
             collision_props=sim_utils.CollisionPropertiesCfg(
                 collision_enabled=True,
-                contact_offset=0.005,
+                contact_offset=0.01,  # Increased for better contact detection
                 rest_offset=0.0,
             ),
         ),
@@ -249,6 +249,9 @@ class LeKiwiToolAugmentedEnvCfg(ManagerBasedRLEnvCfg):
         # Increase solver iterations for stable contact during grasping
         self.sim.physx.solver_position_iteration_count = 32
         self.sim.physx.solver_velocity_iteration_count = 16
+
+        # Note: Do NOT set sim.physics_material here as it affects robot wheels too
+        # Object friction is set per-object in scene config instead
 
     def use_teleop_device(self, teleop_device: str) -> None:
         """Configure environment for specific teleoperation device."""
