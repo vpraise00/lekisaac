@@ -73,6 +73,8 @@ class LeKiwiToolAugmentedSceneCfg(InteractiveSceneCfg):
     )
 
     # Spatula on kitchen counter surface
+    # Note: UsdFileCfg doesn't support physics_material parameter
+    # Friction is handled by global sim.physics_material or USD file itself
     spatula: RigidObjectCfg = RigidObjectCfg(
         prim_path="{ENV_REGEX_NS}/Spatula",
         init_state=RigidObjectCfg.InitialStateCfg(
@@ -86,7 +88,7 @@ class LeKiwiToolAugmentedSceneCfg(InteractiveSceneCfg):
                 kinematic_enabled=False,
                 max_depenetration_velocity=0.5,  # Reduced for stable grasping
             ),
-            mass_props=sim_utils.MassPropertiesCfg(mass=0.05),  # Lighter for easier grasping
+            mass_props=sim_utils.MassPropertiesCfg(mass=0.01),  # Very light for easier grasping
             collision_props=sim_utils.CollisionPropertiesCfg(
                 collision_enabled=True,
                 contact_offset=0.01,  # Increased for better contact detection
@@ -246,9 +248,9 @@ class LeKiwiToolAugmentedEnvCfg(ManagerBasedRLEnvCfg):
         self.sim.physx.bounce_threshold_velocity = 0.01
         self.sim.physx.friction_correlation_distance = 0.00625
         self.sim.physx.gpu_max_rigid_patch_count = 2**20
-        # Increase solver iterations for stable contact during grasping
-        self.sim.physx.solver_position_iteration_count = 32
-        self.sim.physx.solver_velocity_iteration_count = 16
+        # Solver iterations (lower = better performance, higher = more stable grasping)
+        self.sim.physx.solver_position_iteration_count = 8
+        self.sim.physx.solver_velocity_iteration_count = 4
 
         # Note: Do NOT set sim.physics_material here as it affects robot wheels too
         # Object friction is set per-object in scene config instead

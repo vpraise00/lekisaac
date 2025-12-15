@@ -50,13 +50,13 @@ LEKIWI_CFG = ArticulationCfg(
         rigid_props=sim_utils.RigidBodyPropertiesCfg(disable_gravity=False),
         collision_props=sim_utils.CollisionPropertiesCfg(
             collision_enabled=True,
-            contact_offset=0.02,   # 20mm - detect contacts earlier to prevent penetration
+            contact_offset=0.005,
             rest_offset=0.0,
         ),
         articulation_props=sim_utils.ArticulationRootPropertiesCfg(
-            enabled_self_collisions=False,  # Disabled to test shoulder_pan vibration
-            solver_position_iteration_count=16,  # Increased for better grasping contact
-            solver_velocity_iteration_count=8,   # Increased for stable grasping
+            enabled_self_collisions=False,
+            solver_position_iteration_count=16,
+            solver_velocity_iteration_count=8,
             fix_root_link=False,  # Mobile base - unfixed root
         ),
     ),
@@ -78,13 +78,13 @@ LEKIWI_CFG = ArticulationCfg(
         },
     ),
     actuators={
-        # Gripper actuator
+        # Gripper actuator - stronger grip to prevent slipping
         "sts3215-gripper": ImplicitActuatorCfg(
             joint_names_expr=[USD_JOINT_NAMES["gripper"]],
-            effort_limit_sim=10,
+            effort_limit_sim=50,
             velocity_limit_sim=10,
-            stiffness=40.0,
-            damping=8.0,
+            stiffness=100.0,
+            damping=20.0,
         ),
         # Arm actuators (5 DOF)
         # Higher stiffness/damping to resist inertial forces during base movement
@@ -164,7 +164,7 @@ LEKIWI_AUGMENTED_CFG = ArticulationCfg(
         rigid_props=sim_utils.RigidBodyPropertiesCfg(disable_gravity=False),
         collision_props=sim_utils.CollisionPropertiesCfg(
             collision_enabled=True,
-            contact_offset=0.02,   # 20mm - detect contacts earlier to prevent penetration
+            contact_offset=0.005,
             rest_offset=0.0,
         ),
         articulation_props=sim_utils.ArticulationRootPropertiesCfg(
@@ -190,12 +190,13 @@ LEKIWI_AUGMENTED_CFG = ArticulationCfg(
         },
     ),
     actuators={
+        # Gripper actuator - stronger grip to prevent slipping
         "sts3215-gripper": ImplicitActuatorCfg(
             joint_names_expr=[USD_JOINT_NAMES["gripper"]],
-            effort_limit_sim=10,
+            effort_limit_sim=50,
             velocity_limit_sim=10,
-            stiffness=40.0,
-            damping=8.0,
+            stiffness=100.0,
+            damping=20.0,
         ),
         "sts3215-arm": ImplicitActuatorCfg(
             joint_names_expr=[

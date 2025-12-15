@@ -720,6 +720,14 @@
             <geometry>
                 <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/moving_jaw_named_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>2.0</mu>
+                        <mu2>2.0</mu2>
+                    </ode>
+                </friction>
+            </surface>
         </collision>
     </link>
     <link name="Wrist_Camera_Mount_v11">

@@ -54,6 +54,11 @@ def main():
         action="store_true",
         help="Only convert the standard URDF",
     )
+    parser.add_argument(
+        "--smooth-only",
+        action="store_true",
+        help="Only convert the smooth URDF variants (cylinder wheel collision)",
+    )
     args = parser.parse_args()
 
     # Get URDF directory
@@ -63,19 +68,32 @@ def main():
     # Define URDF/USD pairs
     conversions = []
 
-    if not args.augmented_only:
+    if args.smooth_only:
+        # Convert only smooth variants (cylinder wheel collision)
         conversions.append({
-            "urdf": urdf_dir / "lekiwi.urdf",
-            "usd": urdf_dir / "lekiwi.usd",
-            "name": "LeKiwi (standard)",
+            "urdf": urdf_dir / "lekiwi_smooth.urdf",
+            "usd": urdf_dir / "lekiwi_smooth.usd",
+            "name": "LeKiwi Smooth (cylinder wheels)",
         })
+        conversions.append({
+            "urdf": urdf_dir / "lekiwi_augmented_smooth.urdf",
+            "usd": urdf_dir / "lekiwi_augmented_smooth.usd",
+            "name": "LeKiwi Augmented Smooth (cylinder wheels, 0.8m taller)",
+        })
+    else:
+        if not args.augmented_only:
+            conversions.append({
+                "urdf": urdf_dir / "lekiwi.urdf",
+                "usd": urdf_dir / "lekiwi.usd",
+                "name": "LeKiwi (standard)",
+            })
 
-    if not args.standard_only:
-        conversions.append({
-            "urdf": urdf_dir / "lekiwi_augmented.urdf",
-            "usd": urdf_dir / "lekiwi_augmented.usd",
-            "name": "LeKiwi (augmented, 0.8m taller)",
-        })
+        if not args.standard_only:
+            conversions.append({
+                "urdf": urdf_dir / "lekiwi_augmented.urdf",
+                "usd": urdf_dir / "lekiwi_augmented.usd",
+                "name": "LeKiwi (augmented, 0.8m taller)",
+            })
 
     # Convert each URDF
     for conv in conversions:
