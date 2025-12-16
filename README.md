@@ -13,7 +13,7 @@ This package enables teleoperation data collection for the LeKiwi mobile manipul
 - **Hybrid Teleoperation**: SO101Leader for arm + keyboard (WASD/ZX) for base
 - **Mobile Manipulation**: Velocity-based holonomic control for smooth omnidirectional movement
 - **Data Collection**: Record demonstrations in HDF5 format
-- **Multiple Environments**: Basic teleop, kitchen scene, tool-augmented tasks
+- **Multiple Environments**: Basic teleop, kitchen scene, pick-and-move tasks
 - **IsaacLab Integration**: Built on leisaac for seamless simulation
 
 ## Quick Start
@@ -122,7 +122,7 @@ python lekisaac/scripts/replay_lekiwi.py \
 |---------|-------------|-------|
 | `LeKisaac-LeKiwi-Teleop-v0` | Basic teleoperation | Ground plane + test cube |
 | `LeKisaac-LeKiwi-Kitchen-v0` | Kitchen manipulation | Kitchen scene with cube/bowl |
-| `LeKisaac-LeKiwi-ToolAugmented-v0` | Elevated arm (0.8m taller) | Kitchen scene with pan on counter |
+| `LeKisaac-LeKiwi-PickMoveSpatula-v0` | Pick and move spatula (0.8m taller arm) | Kitchen scene with spatula on counter |
 
 ## Robot Variants
 
@@ -145,7 +145,7 @@ lekisaac/
 │   ├── tasks/                   # Task environments
 │   │   ├── lekiwi_teleop/      # LeKisaac-LeKiwi-Teleop-v0
 │   │   ├── lekiwi_kitchen/     # LeKisaac-LeKiwi-Kitchen-v0
-│   │   └── lekiwi_tool_augmented/  # LeKisaac-LeKiwi-ToolAugmented-v0
+│   │   └── lekiwi_pick_move_spatula/  # LeKisaac-LeKiwi-PickMoveSpatula-v0
 │   └── utils/                   # Utilities
 ├── scripts/
 │   ├── teleop_lekiwi.py        # Main teleoperation script

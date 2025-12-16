@@ -1,10 +1,10 @@
 # Copyright (c) 2024, lekisaac Project
 # SPDX-License-Identifier: Apache-2.0
 
-"""Configuration for the LeKiwi tool augmented environment.
+"""Configuration for the LeKiwi pick and move spatula environment.
 
 This environment uses a LeKiwi robot with an elevated arm (0.8m taller)
-for tasks requiring manipulation at higher surfaces (e.g., tables, counters).
+for picking up a spatula from the kitchen counter and moving it.
 """
 
 import os
@@ -37,8 +37,8 @@ SPATULA_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "objects", "Spatula.usd")
 
 
 @configclass
-class LeKiwiToolAugmentedSceneCfg(InteractiveSceneCfg):
-    """Scene configuration for LeKiwi tool augmented environment."""
+class LeKiwiPickMoveSpatulaSceneCfg(InteractiveSceneCfg):
+    """Scene configuration for LeKiwi pick and move spatula environment."""
 
     # Invisible ground plane for robot collision
     # Friction enabled for grasping - wheels have frictionless material in USD
@@ -158,7 +158,7 @@ class LeKiwiToolAugmentedSceneCfg(InteractiveSceneCfg):
 
 
 @configclass
-class LeKiwiToolAugmentedActionsCfg:
+class LeKiwiPickMoveSpatulaActionsCfg:
     """Action configuration for LeKiwi robot."""
 
     arm_action: mdp.ActionTermCfg = MISSING
@@ -167,14 +167,14 @@ class LeKiwiToolAugmentedActionsCfg:
 
 
 @configclass
-class LeKiwiToolAugmentedEventCfg:
+class LeKiwiPickMoveSpatulaEventCfg:
     """Event configuration."""
 
     reset_all = EventTerm(func=mdp.reset_scene_to_default, mode="reset")
 
 
 @configclass
-class LeKiwiToolAugmentedObservationsCfg:
+class LeKiwiPickMoveSpatulaObservationsCfg:
     """Observation configuration."""
 
     @configclass
@@ -207,29 +207,29 @@ class LeKiwiToolAugmentedObservationsCfg:
 
 
 @configclass
-class LeKiwiToolAugmentedRewardsCfg:
+class LeKiwiPickMoveSpatulaRewardsCfg:
     """Reward configuration (empty for teleoperation)."""
 
     pass
 
 
 @configclass
-class LeKiwiToolAugmentedTerminationsCfg:
+class LeKiwiPickMoveSpatulaTerminationsCfg:
     """Termination configuration."""
 
     time_out = DoneTerm(func=mdp.time_out, time_out=True)
 
 
 @configclass
-class LeKiwiToolAugmentedEnvCfg(ManagerBasedRLEnvCfg):
-    """Configuration for LeKiwi tool augmented environment."""
+class LeKiwiPickMoveSpatulaEnvCfg(ManagerBasedRLEnvCfg):
+    """Configuration for LeKiwi pick and move spatula environment."""
 
-    scene: LeKiwiToolAugmentedSceneCfg = LeKiwiToolAugmentedSceneCfg(env_spacing=4.0)
-    observations: LeKiwiToolAugmentedObservationsCfg = LeKiwiToolAugmentedObservationsCfg()
-    actions: LeKiwiToolAugmentedActionsCfg = LeKiwiToolAugmentedActionsCfg()
-    events: LeKiwiToolAugmentedEventCfg = LeKiwiToolAugmentedEventCfg()
-    rewards: LeKiwiToolAugmentedRewardsCfg = LeKiwiToolAugmentedRewardsCfg()
-    terminations: LeKiwiToolAugmentedTerminationsCfg = LeKiwiToolAugmentedTerminationsCfg()
+    scene: LeKiwiPickMoveSpatulaSceneCfg = LeKiwiPickMoveSpatulaSceneCfg(env_spacing=4.0)
+    observations: LeKiwiPickMoveSpatulaObservationsCfg = LeKiwiPickMoveSpatulaObservationsCfg()
+    actions: LeKiwiPickMoveSpatulaActionsCfg = LeKiwiPickMoveSpatulaActionsCfg()
+    events: LeKiwiPickMoveSpatulaEventCfg = LeKiwiPickMoveSpatulaEventCfg()
+    rewards: LeKiwiPickMoveSpatulaRewardsCfg = LeKiwiPickMoveSpatulaRewardsCfg()
+    terminations: LeKiwiPickMoveSpatulaTerminationsCfg = LeKiwiPickMoveSpatulaTerminationsCfg()
     recorders: RecordTerm = RecordTerm()
 
     def __post_init__(self) -> None:
@@ -238,7 +238,7 @@ class LeKiwiToolAugmentedEnvCfg(ManagerBasedRLEnvCfg):
         self.decimation = 1
         self.episode_length_s = 60.0
 
-        # Viewer settings (elevated view for tool augmented)
+        # Viewer settings (elevated view for pick move spatula)
         self.viewer.eye = (-2.0, -1.0, 2.0)
         self.viewer.lookat = (0.0, 0.0, 1.0)
 

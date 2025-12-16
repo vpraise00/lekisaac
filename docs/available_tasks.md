@@ -8,7 +8,7 @@ This document lists all available task environments in LeKisaac.
 |---------|-------------|-------|
 | `LeKisaac-LeKiwi-Teleop-v0` | Basic teleoperation environment | Ground plane + test cube |
 | `LeKisaac-LeKiwi-Kitchen-v0` | Kitchen environment for manipulation | Kitchen scene with furniture |
-| `LeKisaac-LeKiwi-ToolAugmented-v0` | Elevated arm (0.8m taller) for high surface tasks | Kitchen + elevated cube |
+| `LeKisaac-LeKiwi-PickMoveSpatula-v0` | Pick and move spatula (0.8m taller arm) | Kitchen + spatula on counter |
 
 ---
 
@@ -78,18 +78,19 @@ python lekisaac/scripts/teleop_lekiwi.py \
 
 ---
 
-## LeKisaac-LeKiwi-ToolAugmented-v0
+## LeKisaac-LeKiwi-PickMoveSpatula-v0
 
-Environment with an elevated LeKiwi robot (0.8m taller arm) for tasks on high surfaces like tables and counters.
+Environment for picking up and moving a spatula from the kitchen counter. Uses an elevated LeKiwi robot (0.8m taller arm) for reaching high surfaces.
 
 ### Robot Configuration
-- Uses `lekiwi_augmented.usd` with modified URDF
+- Uses `lekiwi_elevated_smt.usd` with modified URDF
 - Arm is 0.8m higher than standard LeKiwi
+- Enlarged center standoff for stability
 - Same base and wheel configuration as standard
 
 ### Scene Contents
-- Kitchen scene (`kiwi_kitchen.usd`) - visual environment
-- Green cube at 1m height for elevated manipulation practice
+- Kitchen scene (`kiwi_kitchen.usd`) - visual environment with collision
+- Spatula (`Spatula.usd`) - graspable tool on kitchen counter
 - Dome lighting
 
 ### Quick Start
@@ -100,16 +101,16 @@ python lekisaac/scripts/convert_urdf_to_usd.py --augmented-only
 
 # Basic teleoperation
 python lekisaac/scripts/teleop_lekiwi.py \
-    --task=LeKisaac-LeKiwi-ToolAugmented-v0 \
+    --task=LeKisaac-LeKiwi-PickMoveSpatula-v0 \
     --port=/dev/ttyACM0 \
     --device=cuda
 
 # With recording
 python lekisaac/scripts/teleop_lekiwi.py \
-    --task=LeKisaac-LeKiwi-ToolAugmented-v0 \
+    --task=LeKisaac-LeKiwi-PickMoveSpatula-v0 \
     --port=/dev/ttyACM0 \
     --record \
-    --dataset_file=./datasets/tool_augmented_demos.hdf5 \
+    --dataset_file=./datasets/pick_move_spatula_demos.hdf5 \
     --num_demos=50
 ```
 

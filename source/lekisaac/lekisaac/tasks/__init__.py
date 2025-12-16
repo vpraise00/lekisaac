@@ -5,4 +5,4 @@
 
 from . import lekiwi_teleop  # noqa: F401
 from . import lekiwi_kitchen  # noqa: F401
-from . import lekiwi_tool_augmented  # noqa: F401
+from . import lekiwi_pick_move_spatula  # noqa: F401
