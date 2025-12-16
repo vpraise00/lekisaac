@@ -14,7 +14,7 @@ from lekisaac.utils.constant import URDF_ROOT
 
 # LeKiwi USD asset paths (smooth = cylinder wheel collision for stable movement)
 LEKIWI_ASSET_PATH = Path(URDF_ROOT) / "lekiwi" / "lekiwi_smooth.usd"
-LEKIWI_AUGMENTED_ASSET_PATH = Path(URDF_ROOT) / "lekiwi" / "lekiwi_elevated_smooth.usd"  # 0.8m taller
+LEKIWI_AUGMENTED_ASSET_PATH = Path(URDF_ROOT) / "lekiwi" / "lekiwi_elevated_smt.usd"  # 0.8m taller, enlarged center standoff
 
 # Joint name mapping from USD (actual names from URDF conversion)
 # Arm joints:
