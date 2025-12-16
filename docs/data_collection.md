@@ -85,6 +85,7 @@ During teleoperation:
 - Press **'B'** to start teleoperation
 - Press **'N'** after successful task completion (marks as success)
 - Press **'R'** if the attempt failed (marks as failed)
+- Press **'M'** to undo/delete the last episode (useful if you accidentally pressed 'N' on a failed attempt)
 
 **Important**: Only episodes marked with 'N' (success=True) are used for training.
 

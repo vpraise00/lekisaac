@@ -41,13 +41,13 @@ class LeKiwiToolAugmentedSceneCfg(InteractiveSceneCfg):
     """Scene configuration for LeKiwi tool augmented environment."""
 
     # Invisible ground plane for robot collision
-    # Friction = 0 for velocity-based holonomic control (wheel rotation is visual only)
+    # Friction enabled for grasping - wheels have frictionless material in USD
     ground = AssetBaseCfg(
         prim_path="/World/defaultGroundPlane",
         spawn=sim_utils.GroundPlaneCfg(
             physics_material=sim_utils.RigidBodyMaterialCfg(
-                static_friction=0.0,
-                dynamic_friction=0.0,
+                static_friction=1.0,
+                dynamic_friction=1.0,
                 restitution=0.0,
             ),
             visible=False,
@@ -73,25 +73,23 @@ class LeKiwiToolAugmentedSceneCfg(InteractiveSceneCfg):
     )
 
     # Spatula on kitchen counter surface
-    # Note: UsdFileCfg doesn't support physics_material parameter
-    # Friction is handled by global sim.physics_material or USD file itself
     spatula: RigidObjectCfg = RigidObjectCfg(
         prim_path="{ENV_REGEX_NS}/Spatula",
         init_state=RigidObjectCfg.InitialStateCfg(
-            pos=(-0.97, 0.91, 1.0),  # On kitchen counter (raised to avoid collision)
+            pos=(-0.97, 0.91, 1.0),  # On kitchen counter
         ),
         spawn=sim_utils.UsdFileCfg(
             usd_path=SPATULA_USD,
-            scale=(0.01, 0.01, 0.02),
+            scale=(0.008, 0.008, 0.016),  # z doubled from 0.008
             rigid_props=sim_utils.RigidBodyPropertiesCfg(
                 disable_gravity=False,
                 kinematic_enabled=False,
-                max_depenetration_velocity=0.5,  # Reduced for stable grasping
+                max_depenetration_velocity=0.5,
             ),
-            mass_props=sim_utils.MassPropertiesCfg(mass=0.01),  # Very light for easier grasping
+            mass_props=sim_utils.MassPropertiesCfg(mass=0.01),  # 10g - lighter for easier grasping
             collision_props=sim_utils.CollisionPropertiesCfg(
                 collision_enabled=True,
-                contact_offset=0.01,  # Increased for better contact detection
+                contact_offset=0.005,
                 rest_offset=0.0,
             ),
         ),

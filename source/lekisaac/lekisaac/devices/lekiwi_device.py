@@ -155,6 +155,7 @@ class LeKiwiDevice(Device):
         msg += "\tB: Start control\n"
         msg += "\tR: Reset (mark as failed)\n"
         msg += "\tN: Reset (mark as successful)\n"
+        msg += "\tM: Undo last episode (delete & re-record)\n"
         msg += "\tCtrl+C: Quit\n"
         return msg
 

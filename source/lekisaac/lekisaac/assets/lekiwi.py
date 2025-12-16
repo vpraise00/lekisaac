@@ -78,13 +78,13 @@ LEKIWI_CFG = ArticulationCfg(
         },
     ),
     actuators={
-        # Gripper actuator - stronger grip to prevent slipping
+        # Gripper actuator - matching leisaac SO101 settings
         "sts3215-gripper": ImplicitActuatorCfg(
             joint_names_expr=[USD_JOINT_NAMES["gripper"]],
-            effort_limit_sim=50,
+            effort_limit_sim=10,
             velocity_limit_sim=10,
-            stiffness=100.0,
-            damping=20.0,
+            stiffness=17.8,
+            damping=0.60,
         ),
         # Arm actuators (5 DOF)
         # Higher stiffness/damping to resist inertial forces during base movement
@@ -190,14 +190,16 @@ LEKIWI_AUGMENTED_CFG = ArticulationCfg(
         },
     ),
     actuators={
-        # Gripper actuator - stronger grip to prevent slipping
+        # Gripper actuator - matching leisaac SO101 settings
         "sts3215-gripper": ImplicitActuatorCfg(
             joint_names_expr=[USD_JOINT_NAMES["gripper"]],
-            effort_limit_sim=50,
+            effort_limit_sim=10,
             velocity_limit_sim=10,
-            stiffness=100.0,
-            damping=20.0,
+            stiffness=17.8,
+            damping=0.60,
         ),
+        # Arm actuators (5 DOF)
+        # Higher stiffness/damping to resist inertial forces during base movement
         "sts3215-arm": ImplicitActuatorCfg(
             joint_names_expr=[
                 USD_JOINT_NAMES["shoulder_pan"],

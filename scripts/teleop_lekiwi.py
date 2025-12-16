@@ -190,6 +190,7 @@ def main():
     # Flags for handling reset in main loop (leisaac pattern)
     should_reset_recording_instance = False
     should_reset_task_success = False
+    should_undo_last_episode = False
 
     def reset_recording_instance():
         nonlocal should_reset_recording_instance
@@ -200,9 +201,14 @@ def main():
         should_reset_task_success = True
         reset_recording_instance()  # Also trigger reset
 
+    def undo_last_episode():
+        nonlocal should_undo_last_episode
+        should_undo_last_episode = True
+
     # Add callbacks - just set flags, handle in main loop
     teleop_device.add_callback("R", reset_recording_instance)
     teleop_device.add_callback("N", reset_task_success)
+    teleop_device.add_callback("M", undo_last_episode)
 
     # Rate limiter for consistent stepping
     rate_limiter = RateLimiter(args_cli.step_hz)
@@ -227,6 +233,16 @@ def main():
         with torch.inference_mode():
             # Get action from device
             actions = teleop_device.advance()
+
+            # Handle undo last episode (M key pressed)
+            if should_undo_last_episode:
+                should_undo_last_episode = False
+                if args_cli.record:
+                    if unwrapped_env.recorder_manager.undo_last_episode():
+                        current_recorded_demo_count = unwrapped_env.recorder_manager.exported_successful_episode_count + resume_recorded_demo_count
+                        print(f"[INFO] Undo! Deleted last episode. Current count: {current_recorded_demo_count}")
+                    else:
+                        print("[INFO] Undo failed - no episodes to delete.")
 
             # Handle task success (N key pressed)
             if should_reset_task_success:

@@ -72,6 +72,7 @@ Move the SO101Leader device physically to control the robot arm:
 | B | Start teleoperation |
 | R | Reset environment (mark episode as failed) |
 | N | Reset environment (mark episode as successful) |
+| M | Undo last episode (delete and re-record) |
 | Ctrl+C | Quit |
 
 ## Velocity Settings
