@@ -134,7 +134,8 @@ class HolonomicBaseVelocityAction(ActionTerm):
 
         # Strafe Left/Right (A/D)
         # Back wheel aligned with strafe direction, front wheels at 60° angle
-        strafe_back = -vy / r * 1.0 * STRAFE_SCALE
+        # Back wheel faster (1.25x) to compensate for friction
+        strafe_back = -vy / r * 1.25 * STRAFE_SCALE
         strafe_left = -vy / r * (math.sqrt(3) / 2) * STRAFE_SCALE
         strafe_right = -vy / r * (math.sqrt(3) / 2) * STRAFE_SCALE
 

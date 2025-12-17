@@ -306,8 +306,13 @@ class LeKiwiFlipEggEnvCfg(ManagerBasedRLEnvCfg):
         self.sim.physx.solver_position_iteration_count = 8
         self.sim.physx.solver_velocity_iteration_count = 4
 
-        # Note: Do NOT set sim.physics_material here as it affects robot wheels too
-        # Object friction is set per-object in scene config instead
+        # Global physics material for grasping friction
+        # Wheels use FrictionlessWheelMaterial in USD, so they won't be affected
+        self.sim.physics_material = sim_utils.RigidBodyMaterialCfg(
+            static_friction=3.0,
+            dynamic_friction=3.0,
+            restitution=0.0,
+        )
 
     def use_teleop_device(self, teleop_device: str) -> None:
         """Configure environment for specific teleoperation device."""
