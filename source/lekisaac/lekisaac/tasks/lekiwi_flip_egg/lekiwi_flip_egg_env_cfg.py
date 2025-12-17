@@ -109,9 +109,9 @@ class LeKiwiFlipEggSceneCfg(InteractiveSceneCfg):
     # Frying pan on gas range (fixed position, kinematic)
     # - Kinematic: True (no gravity, no physics response - stays fixed)
     # - Collision: enabled (so egg and spatula can interact with it)
-    frying_pan: AssetBaseCfg = AssetBaseCfg(
+    frying_pan: RigidObjectCfg = RigidObjectCfg(
         prim_path="{ENV_REGEX_NS}/FryingPan",
-        init_state=AssetBaseCfg.InitialStateCfg(
+        init_state=RigidObjectCfg.InitialStateCfg(
             pos=STOVE_POS,  # On gas range front-left burner
             rot=(0.0, 0.0, 0.0, 1.0),  # 180 degrees around Z axis (quaternion: w, x, y, z)
         ),
