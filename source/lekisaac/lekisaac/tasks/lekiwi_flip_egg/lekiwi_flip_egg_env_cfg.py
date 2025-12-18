@@ -21,6 +21,7 @@ import isaaclab.sim as sim_utils
 from isaaclab.envs.mdp.recorders.recorders_cfg import ActionStateRecorderManagerCfg as RecordTerm
 from isaaclab.assets import ArticulationCfg, AssetBaseCfg, RigidObjectCfg
 from isaaclab.envs import ManagerBasedRLEnvCfg
+from isaaclab.envs.mdp import randomize_rigid_body_material
 from isaaclab.managers import EventTermCfg as EventTerm
 from isaaclab.managers import ObservationGroupCfg as ObsGroup
 from isaaclab.managers import ObservationTermCfg as ObsTerm
@@ -51,14 +52,13 @@ STOVE_POS = (0.194, 0.95, 0.954)  # Front-left burner position
 class LeKiwiFlipEggSceneCfg(InteractiveSceneCfg):
     """Scene configuration for LeKiwi flip egg environment."""
 
-    # Invisible ground plane for robot collision
-    # Friction for grasping (wheels have FrictionlessWheelMaterial in USD)
+    # Invisible ground plane for robot collision (zero friction for wheels)
     ground = AssetBaseCfg(
         prim_path="/World/defaultGroundPlane",
         spawn=sim_utils.GroundPlaneCfg(
             physics_material=sim_utils.RigidBodyMaterialCfg(
-                static_friction=3.0,
-                dynamic_friction=3.0,
+                static_friction=0.0,
+                dynamic_friction=0.0,
                 restitution=0.0,
             ),
             visible=False,
@@ -228,6 +228,19 @@ class LeKiwiFlipEggEventCfg:
 
     reset_all = EventTerm(func=mdp.reset_scene_to_default, mode="reset")
 
+    # Set high friction on spatula for stable grasping (runtime PhysX material)
+    set_spatula_friction = EventTerm(
+        func=randomize_rigid_body_material,
+        mode="startup",
+        params={
+            "static_friction_range": (10.0, 10.0),
+            "dynamic_friction_range": (10.0, 10.0),
+            "restitution_range": (0.0, 0.0),
+            "num_buckets": 1,
+            "asset_cfg": SceneEntityCfg("spatula"),
+        },
+    )
+
 
 @configclass
 class LeKiwiFlipEggObservationsCfg:
@@ -306,13 +319,7 @@ class LeKiwiFlipEggEnvCfg(ManagerBasedRLEnvCfg):
         self.sim.physx.solver_position_iteration_count = 8
         self.sim.physx.solver_velocity_iteration_count = 4
 
-        # Global physics material for grasping friction
-        # Wheels use FrictionlessWheelMaterial in USD, so they won't be affected
-        self.sim.physics_material = sim_utils.RigidBodyMaterialCfg(
-            static_friction=3.0,
-            dynamic_friction=3.0,
-            restitution=0.0,
-        )
+        # Note: No global physics_material - friction is set per-object via randomize_rigid_body_material event
 
     def use_teleop_device(self, teleop_device: str) -> None:
         """Configure environment for specific teleoperation device."""

@@ -125,7 +125,7 @@ class HolonomicBaseVelocityAction(ActionTerm):
         R = self._base_radius
 
         # Scale factors
-        FORWARD_SCALE = 4.5  # W/S: 1.5x from original 3.0
+        FORWARD_SCALE = 3.0
         STRAFE_SCALE = 1.0
         ROTATE_SCALE = 6.0
 
