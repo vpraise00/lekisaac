@@ -41,8 +41,7 @@ class LeKiwiPickMoveSpatulaSceneCfg(InteractiveSceneCfg):
     """Scene configuration for LeKiwi pick and move spatula environment."""
 
     # Invisible ground plane for robot collision
-    # Friction 0 for holonomic base movement (write_root_velocity_to_sim bypasses wheel physics)
-    # Wheels have frictionless material in USD anyway
+    # Friction for grasping (wheels have FrictionlessWheelMaterial in USD)
     ground = AssetBaseCfg(
         prim_path="/World/defaultGroundPlane",
         spawn=sim_utils.GroundPlaneCfg(
