@@ -220,9 +220,9 @@ def convert_base_velocity_to_wheel_velocities(
     R = base_radius
 
     # Motion-specific scale factors
-    FORWARD_SCALE = 3.0   # W/S: 1.5x
-    STRAFE_SCALE = 1.0    # A/D: reduced to prevent base lift
-    ROTATE_SCALE = 6.0    # Z/X: 6x
+    FORWARD_SCALE = 3.0
+    STRAFE_SCALE = 1.0
+    ROTATE_SCALE = 6.0
 
     # === Forward/Backward (W/S) ===
     # Direct velocity without kinematic factor (user request: no 2/sqrt3)
@@ -303,6 +303,7 @@ def preprocess_lekiwi_device_action(action: dict[str, Any], teleop_device) -> to
             dtype=torch.float32,
         ).clone()
         base_velocity = base_velocity.unsqueeze(0).expand(teleop_device.env.num_envs, -1)
+
 
         # Combine arm (6 DOF) + base velocity (3 DOF) actions
         # arm_action[:, :5] = arm joints, arm_action[:, 5] = gripper

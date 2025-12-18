@@ -110,10 +110,10 @@ LEKIWI_CFG = ArticulationCfg(
                 USD_JOINT_NAMES["wheel_right"],
                 USD_JOINT_NAMES["wheel_back"],
             ],
-            effort_limit_sim=100000,  # Increased 500x for heavy base (80kg)
-            velocity_limit_sim=50,
+            effort_limit_sim=1e7,     # Very high for overcoming friction
+            velocity_limit_sim=100,
             stiffness=0.0,  # Velocity control mode - MUST be 0
-            damping=5e5,    # Increased 5x for stronger velocity response
+            damping=5e6,    # 10x increase for stronger velocity response
         ),
     },
     soft_joint_pos_limit_factor=1.0,
@@ -219,10 +219,10 @@ LEKIWI_AUGMENTED_CFG = ArticulationCfg(
                 USD_JOINT_NAMES["wheel_right"],
                 USD_JOINT_NAMES["wheel_back"],
             ],
-            effort_limit_sim=100000,
-            velocity_limit_sim=50,
-            stiffness=0.0,
-            damping=5e5,
+            effort_limit_sim=1e7,     # Very high for overcoming friction
+            velocity_limit_sim=100,
+            stiffness=0.0,  # Velocity control mode - MUST be 0
+            damping=5e6,    # 10x increase for stronger velocity response
         ),
     },
     soft_joint_pos_limit_factor=1.0,

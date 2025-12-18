@@ -84,6 +84,7 @@ class HolonomicBaseVelocityAction(ActionTerm):
         vy_user = self._processed_actions[:, 1]  # User: A/D = left/right
         wz = self._processed_actions[:, 2]  # CCW rotation
 
+
         # Transform from user frame to robot URDF frame
         # Robot's "forward" (arm direction) is -Y in URDF
         # User vx (forward) -> Robot +Y
@@ -104,6 +105,7 @@ class HolonomicBaseVelocityAction(ActionTerm):
         self._root_velocity[:, 3:5] = 0.0  # No roll/pitch
         self._root_velocity[:, 5] = wz  # Yaw angular velocity
 
+
         # Write velocity directly to simulation
         self._asset.write_root_velocity_to_sim(self._root_velocity)
 
@@ -122,8 +124,8 @@ class HolonomicBaseVelocityAction(ActionTerm):
         r = self._wheel_radius
         R = self._base_radius
 
-        # Scale factors (same as action_process.py)
-        FORWARD_SCALE = 3.0
+        # Scale factors
+        FORWARD_SCALE = 4.5  # W/S: 1.5x from original 3.0
         STRAFE_SCALE = 1.0
         ROTATE_SCALE = 6.0
 

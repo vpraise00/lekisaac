@@ -277,9 +277,9 @@ class LeKiwiKitchenEnvCfg(ManagerBasedRLEnvCfg):
         self.sim.physx.bounce_threshold_velocity = 0.01
         self.sim.physx.friction_correlation_distance = 0.00625
         self.sim.physx.gpu_max_rigid_patch_count = 2**20
-        # Increase solver iterations for stable contact during grasping
-        self.sim.physx.solver_position_iteration_count = 32
-        self.sim.physx.solver_velocity_iteration_count = 16
+        # Solver iterations (lower = better performance)
+        self.sim.physx.solver_position_iteration_count = 8
+        self.sim.physx.solver_velocity_iteration_count = 4
 
     def use_teleop_device(self, teleop_device: str) -> None:
         """Configure environment for specific teleoperation device.

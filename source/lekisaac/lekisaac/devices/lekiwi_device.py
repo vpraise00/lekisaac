@@ -55,8 +55,8 @@ class LeKiwiDevice(Device):
         port: str = "/dev/ttyACM0",
         recalibrate: bool = False,
         calibration_file_name: str = "lekiwi_leader.json",
-        base_linear_speed: float = 0.3,
-        base_angular_speed: float = 0.5,
+        base_linear_speed: float = 3.0,
+        base_angular_speed: float = 3.0,
     ):
         """Initialize the LeKiwi teleoperation device.
 
