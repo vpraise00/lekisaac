@@ -220,7 +220,7 @@ def convert_base_velocity_to_wheel_velocities(
     R = base_radius
 
     # Motion-specific scale factors
-    FORWARD_SCALE = 3.0
+    FORWARD_SCALE = 1.5
     STRAFE_SCALE = 1.0
     ROTATE_SCALE = 6.0
 

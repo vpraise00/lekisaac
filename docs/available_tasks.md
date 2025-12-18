@@ -9,6 +9,8 @@ This document lists all available task environments in LeKisaac.
 | `LeKisaac-LeKiwi-Teleop-v0` | Basic teleoperation environment | Ground plane + test cube |
 | `LeKisaac-LeKiwi-Kitchen-v0` | Kitchen environment for manipulation | Kitchen scene with furniture |
 | `LeKisaac-LeKiwi-PickMoveSpatula-v0` | Pick and move spatula (0.8m taller arm) | Kitchen + spatula on counter |
+| `LeKisaac-LeKiwi-FlipEgg-v0` | Flip egg with spatula (0.8m taller arm) | Kitchen + frying pan, egg, spatula |
+| `LeKisaac-LeKiwi-CutCube-v0` | Cut cube with knife (0.8m taller arm) | Kitchen + cutting board, knife, soft cube |
 
 ---
 
@@ -162,3 +164,52 @@ To add a new task with a custom scene:
 5. Import in `tasks/__init__.py`
 
 See `lekiwi_kitchen/` for an example implementation.
+
+---
+
+## LeKisaac-LeKiwi-FlipEgg-v0
+
+Environment for flipping an egg on a frying pan using a spatula. Uses an elevated LeKiwi robot (0.8m taller arm).
+
+### Scene Contents
+- Kitchen scene (`kiwi_kitchen.usd`)
+- Frying pan on gas range (kinematic)
+- Egg on the frying pan (dynamic)
+- Spatula for flipping
+
+### Quick Start
+
+```bash
+python lekisaac/scripts/teleop_lekiwi.py \
+    --task=LeKisaac-LeKiwi-FlipEgg-v0 \
+    --port=/dev/ttyACM0 \
+    --device=cuda \
+    --enable_cameras
+```
+
+---
+
+## LeKisaac-LeKiwi-CutCube-v0
+
+Environment for cutting a soft cube with a knife on a cutting board. Uses an elevated LeKiwi robot (0.8m taller arm). When the knife presses down on the cube, the cube splits into two halves.
+
+### Scene Contents
+- Kitchen scene (`kiwi_kitchen.usd`)
+- Cutting board on counter (kinematic)
+- Soft pink cube on cutting board (dynamic)
+- Knife for cutting
+
+### Cutting Mechanic
+- Position knife directly above the cube
+- Press knife down into the cube
+- When knife penetrates enough, cube splits into two vertical halves
+
+### Quick Start
+
+```bash
+python lekisaac/scripts/teleop_lekiwi.py \
+    --task=LeKisaac-LeKiwi-CutCube-v0 \
+    --port=/dev/ttyACM0 \
+    --device=cuda \
+    --enable_cameras
+```

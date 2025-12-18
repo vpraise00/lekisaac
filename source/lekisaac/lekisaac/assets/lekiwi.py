@@ -86,11 +86,17 @@ LEKIWI_CFG = ArticulationCfg(
             stiffness=17.8,
             damping=0.60,
         ),
-        # Arm actuators (5 DOF)
-        # Higher stiffness/damping to resist inertial forces during base movement
+        # Shoulder pan actuator - high effort/stiffness to resist inertial forces during base movement
+        "sts3215-shoulder-pan": ImplicitActuatorCfg(
+            joint_names_expr=[USD_JOINT_NAMES["shoulder_pan"]],
+            effort_limit_sim=100,
+            velocity_limit_sim=10,
+            stiffness=80.0,
+            damping=15.0,
+        ),
+        # Arm actuators (4 DOF - excluding shoulder_pan)
         "sts3215-arm": ImplicitActuatorCfg(
             joint_names_expr=[
-                USD_JOINT_NAMES["shoulder_pan"],
                 USD_JOINT_NAMES["shoulder_lift"],
                 USD_JOINT_NAMES["elbow_flex"],
                 USD_JOINT_NAMES["wrist_flex"],
@@ -198,11 +204,17 @@ LEKIWI_AUGMENTED_CFG = ArticulationCfg(
             stiffness=17.8,
             damping=0.60,
         ),
-        # Arm actuators (5 DOF)
-        # Higher stiffness/damping to resist inertial forces during base movement
+        # Shoulder pan actuator - high effort/stiffness to resist inertial forces during base movement
+        "sts3215-shoulder-pan": ImplicitActuatorCfg(
+            joint_names_expr=[USD_JOINT_NAMES["shoulder_pan"]],
+            effort_limit_sim=100,
+            velocity_limit_sim=10,
+            stiffness=80.0,
+            damping=15.0,
+        ),
+        # Arm actuators (4 DOF - excluding shoulder_pan)
         "sts3215-arm": ImplicitActuatorCfg(
             joint_names_expr=[
-                USD_JOINT_NAMES["shoulder_pan"],
                 USD_JOINT_NAMES["shoulder_lift"],
                 USD_JOINT_NAMES["elbow_flex"],
                 USD_JOINT_NAMES["wrist_flex"],

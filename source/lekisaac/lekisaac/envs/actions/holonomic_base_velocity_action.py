@@ -125,7 +125,7 @@ class HolonomicBaseVelocityAction(ActionTerm):
         R = self._base_radius
 
         # Scale factors
-        FORWARD_SCALE = 3.0
+        FORWARD_SCALE = 1.5
         STRAFE_SCALE = 1.0
         ROTATE_SCALE = 6.0
 
@@ -136,8 +136,8 @@ class HolonomicBaseVelocityAction(ActionTerm):
 
         # Strafe Left/Right (A/D)
         # Back wheel aligned with strafe direction, front wheels at 60° angle
-        # Back wheel faster (1.25x) to compensate for friction
-        strafe_back = -vy / r * 1.25 * STRAFE_SCALE
+        # Back wheel slightly faster (1.1875x = 1.25 * 0.95) to compensate for friction
+        strafe_back = -vy / r * 1.1875 * STRAFE_SCALE
         strafe_left = -vy / r * (math.sqrt(3) / 2) * STRAFE_SCALE
         strafe_right = -vy / r * (math.sqrt(3) / 2) * STRAFE_SCALE
 

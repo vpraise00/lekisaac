@@ -40,6 +40,7 @@ from . import mdp
 LEKISAAC_ASSETS_ROOT = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "..", "assets")
 KITCHEN_SCENE_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "scenes", "kiwi_kitchen.usd")
 SPATULA_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "objects", "Spatula.usd")
+SPATULA_ARTICULATION_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "objects", "Spatula_articulation.usd")
 PAN_B_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "objects", "pan_B.usd")
 EGG_USD = os.path.join(LEKISAAC_ASSETS_ROOT, "objects", "Egg.usd")
 
@@ -83,7 +84,7 @@ class LeKiwiFlipEggSceneCfg(InteractiveSceneCfg):
         ),
     )
 
-    # Spatula (tool) - robot will grasp this to flip the egg
+    # Spatula (tool) - RigidObject
     spatula: RigidObjectCfg = RigidObjectCfg(
         prim_path="{ENV_REGEX_NS}/Spatula",
         init_state=RigidObjectCfg.InitialStateCfg(
@@ -91,13 +92,13 @@ class LeKiwiFlipEggSceneCfg(InteractiveSceneCfg):
         ),
         spawn=sim_utils.UsdFileCfg(
             usd_path=SPATULA_USD,
-            scale=(0.008, 0.008, 0.016),  # z doubled from 0.008
+            scale=(0.008, 0.008, 0.016),
             rigid_props=sim_utils.RigidBodyPropertiesCfg(
                 disable_gravity=False,
                 kinematic_enabled=False,
                 max_depenetration_velocity=0.5,
             ),
-            mass_props=sim_utils.MassPropertiesCfg(mass=0.01),  # 10g - lighter for easier grasping
+            mass_props=sim_utils.MassPropertiesCfg(mass=0.01),
             collision_props=sim_utils.CollisionPropertiesCfg(
                 collision_enabled=True,
                 contact_offset=0.005,
@@ -228,16 +229,29 @@ class LeKiwiFlipEggEventCfg:
 
     reset_all = EventTerm(func=mdp.reset_scene_to_default, mode="reset")
 
-    # Set high friction on spatula for stable grasping (runtime PhysX material)
+    # Set friction on spatula
     set_spatula_friction = EventTerm(
         func=randomize_rigid_body_material,
         mode="startup",
         params={
-            "static_friction_range": (10.0, 10.0),
-            "dynamic_friction_range": (10.0, 10.0),
+            "static_friction_range": (3.0, 3.0),
+            "dynamic_friction_range": (3.0, 3.0),
             "restitution_range": (0.0, 0.0),
             "num_buckets": 1,
             "asset_cfg": SceneEntityCfg("spatula"),
+        },
+    )
+
+    # Set high friction on robot gripper to hold spatula
+    set_gripper_friction = EventTerm(
+        func=randomize_rigid_body_material,
+        mode="startup",
+        params={
+            "static_friction_range": (15.0, 15.0),
+            "dynamic_friction_range": (15.0, 15.0),
+            "restitution_range": (0.0, 0.0),
+            "num_buckets": 1,
+            "asset_cfg": SceneEntityCfg("robot", body_names=["Moving_Jaw_08d_v1"]),
         },
     )
 

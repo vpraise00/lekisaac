@@ -123,6 +123,8 @@ python lekisaac/scripts/replay_lekiwi.py \
 | `LeKisaac-LeKiwi-Teleop-v0` | Basic teleoperation | Ground plane + test cube |
 | `LeKisaac-LeKiwi-Kitchen-v0` | Kitchen manipulation | Kitchen scene with cube/bowl |
 | `LeKisaac-LeKiwi-PickMoveSpatula-v0` | Pick and move spatula (0.8m taller arm) | Kitchen scene with spatula on counter |
+| `LeKisaac-LeKiwi-FlipEgg-v0` | Flip egg with spatula (0.8m taller arm) | Kitchen scene with frying pan, egg, spatula |
+| `LeKisaac-LeKiwi-CutCube-v0` | Cut cube with knife (0.8m taller arm) | Kitchen scene with cutting board, knife, soft cube |
 
 ## Robot Variants
 
@@ -145,7 +147,9 @@ lekisaac/
 │   ├── tasks/                   # Task environments
 │   │   ├── lekiwi_teleop/      # LeKisaac-LeKiwi-Teleop-v0
 │   │   ├── lekiwi_kitchen/     # LeKisaac-LeKiwi-Kitchen-v0
-│   │   └── lekiwi_pick_move_spatula/  # LeKisaac-LeKiwi-PickMoveSpatula-v0
+│   │   ├── lekiwi_pick_move_spatula/  # LeKisaac-LeKiwi-PickMoveSpatula-v0
+│   │   ├── lekiwi_flip_egg/    # LeKisaac-LeKiwi-FlipEgg-v0
+│   │   └── lekiwi_cut_cube/    # LeKisaac-LeKiwi-CutCube-v0
 │   └── utils/                   # Utilities
 ├── scripts/
 │   ├── teleop_lekiwi.py        # Main teleoperation script
