@@ -115,6 +115,7 @@ python lekisaac/scripts/replay_lekiwi.py \
 | Start | B | Begin teleoperation |
 | Reset (failed) | R | Reset environment (mark episode as failed) |
 | Reset (success) | N | Reset environment (mark episode as successful) |
+| Undo | M | Delete last episode and re-record |
 
 ## Available Tasks
 

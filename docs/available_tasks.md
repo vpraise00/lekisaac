@@ -152,6 +152,7 @@ All tasks support the following command-line options:
 | Start | B | Begin teleoperation |
 | Reset (failed) | R | Reset environment (mark as failed) |
 | Reset (success) | N | Reset environment (mark as successful) |
+| Undo | M | Delete last episode and re-record |
 
 ## Adding New Tasks
 
