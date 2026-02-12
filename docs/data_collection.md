@@ -174,10 +174,10 @@ To get an access token:
 3. Paste the token when prompted
 
 > **Token Security**:
-> - Fine-grained 토큰을 사용하여 필요한 레포지토리에만 접근 권한을 부여하세요.
-> - 토큰을 스크립트나 코드에 직접 하드코딩하지 마세요. `huggingface-cli login`은 토큰을 `~/.cache/huggingface/`에 안전하게 저장합니다.
-> - 사용하지 않는 토큰은 https://huggingface.co/settings/tokens 에서 삭제하세요.
-> - CI/CD 환경에서는 `HF_TOKEN` 환경 변수를 사용하세요.
+> - Use fine-grained tokens scoped only to the repositories you need.
+> - Never hardcode tokens in scripts or code. `huggingface-cli login` stores tokens securely in `~/.cache/huggingface/`.
+> - Revoke unused tokens at https://huggingface.co/settings/tokens.
+> - For CI/CD environments, use the `HF_TOKEN` environment variable.
 
 ### Step 2: Convert and Upload
 
