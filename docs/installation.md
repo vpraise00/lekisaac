@@ -83,11 +83,15 @@ pip install -e source/lekisaac
 
 3. **Set up port permissions**:
    ```bash
-   sudo chmod 666 /dev/ttyACM0
-   # Or add user to dialout group (permanent)
+   # 영구 설정 (권장, 로그아웃/로그인 필요):
    sudo usermod -aG dialout $USER
    # Log out and back in for group change to take effect
+
+   # 즉시 사용 (임시, 재부팅 시 초기화):
+   sudo chmod 666 /dev/ttyACM0
    ```
+
+   > **Note**: `usermod -aG dialout`은 영구적이고 안전한 방식입니다. `chmod 666`은 모든 사용자에게 디바이스 접근 권한을 부여하므로, 빠른 테스트 시에만 사용하세요.
 
 4. **Calibrate the leader device** (first time only):
    ```bash
@@ -122,6 +126,10 @@ PermissionError: [Errno 13] Permission denied: '/dev/ttyACM0'
 
 Solution:
 ```bash
+# 영구 설정 (권장, 로그아웃/로그인 필요):
+sudo usermod -aG dialout $USER
+
+# 즉시 사용 (임시, 재부팅 시 초기화):
 sudo chmod 666 /dev/ttyACM0
 ```
 

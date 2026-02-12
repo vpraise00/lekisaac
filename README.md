@@ -38,12 +38,16 @@ pip install -e lekisaac/source/lekisaac
 ### USB Port Permission
 
 ```bash
-sudo chmod 666 /dev/ttyACM0
-# or permanently:
+# 영구 설정 (권장, 로그아웃/로그인 필요):
 sudo usermod -aG dialout $USER
+
+# 즉시 사용 (임시, 재부팅 시 초기화):
+sudo chmod 666 /dev/ttyACM0
 ```
 
 ### URDF to USD Conversion (Required First Time)
+
+> **Note**: USD 파일은 git에 포함되지 않습니다. 레포지토리 클론 후 반드시 아래 변환을 실행하세요.
 
 ```bash
 # Convert all robot variants

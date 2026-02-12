@@ -18,9 +18,9 @@ source/lekisaac/lekisaac/devices/.cache/
 datasets/
 *.hdf5
 
-# Generated USD files (but keep lekiwi.usd for distribution)
-# urdf/**/*.usd
-!urdf/lekiwi/lekiwi.usd
+# Generated USD files from URDF conversion (regenerate with convert_urdf_to_usd.py)
+urdf/**/*.usd
+urdf/**/configuration/
 
 # IDE
 .vscode/

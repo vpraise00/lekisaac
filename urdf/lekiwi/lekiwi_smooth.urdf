@@ -9,13 +9,13 @@
         <visual name="base_plate_layer1_v5_visual">
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/base_plate_layername_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/base_plate_layername_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="base_plate_layer1_v5_collision">
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/base_plate_layername_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/base_plate_layername_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -28,13 +28,13 @@
         <visual name="drive_motor_mount_v11_2_visual">
             <origin xyz="0.0 0.0 -0.0035000000000000005" rpy="3.141592653589793 -0.0 1.5707963267948966" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/drive_motor_mount_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/drive_motor_mount_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="drive_motor_mount_v11_2_collision">
             <origin xyz="0.0 0.0 -0.0035000000000000005" rpy="3.141592653589793 -0.0 1.5707963267948966" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/drive_motor_mount_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/drive_motor_mount_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -47,13 +47,13 @@
         <visual name="ST3215_Servo_Motor_v1_2_visual">
             <origin xyz="0.010249999999999999 -0.025599999999999987 -0.007250000007450583" rpy="-3.141592653589793 -1.5707963267948966 0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stname_servo_motor_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stname_servo_motor_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="ST3215_Servo_Motor_v1_2_collision">
             <origin xyz="0.010249999999999999 -0.025599999999999987 -0.007250000007450583" rpy="-3.141592653589793 -1.5707963267948966 0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stname_servo_motor_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stname_servo_motor_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -66,7 +66,7 @@
         <visual name="a_4_Omni_Directional_Wheel_Single_Body_v1_2_visual">
             <origin xyz="7.450578487500081e-12 0.015874999999999986 6.661338147750939e-18" rpy="1.5707963267948966 0.26179938779914924 -1.0046485565123013e-33" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/name_omni_directional_wheel_single_body_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/name_omni_directional_wheel_single_body_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="a_4_Omni_Directional_Wheel_Single_Body_v1_2_collision">
@@ -85,13 +85,13 @@
         <visual name="omni_wheel_mount_v5_2_visual">
             <origin xyz="7.450581818169155e-12 2.220446049250313e-18 -0.005587499999999999" rpy="3.141592653589793 6.887535064975403e-49 1.8369701987210297e-16" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/omni_wheel_mount_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/omni_wheel_mount_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="omni_wheel_mount_v5_2_collision">
             <origin xyz="7.450581818169155e-12 2.220446049250313e-18 -0.005587499999999999" rpy="3.141592653589793 6.887535064975403e-49 1.8369701987210297e-16" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/omni_wheel_mount_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/omni_wheel_mount_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -104,13 +104,13 @@
         <visual name="drive_motor_mount_v11_1_visual">
             <origin xyz="2.3027551065979426e-09 1.924311203715945e-09 0.0035000000000000005" rpy="0.0 -0.0 0.5235987755982988" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/drive_motor_mount_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/drive_motor_mount_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="drive_motor_mount_v11_1_collision">
             <origin xyz="2.3027551065979426e-09 1.924311203715945e-09 0.0035000000000000005" rpy="0.0 -0.0 0.5235987755982988" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/drive_motor_mount_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/drive_motor_mount_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -123,13 +123,13 @@
         <visual name="ST3215_Servo_Motor_v1_1_visual">
             <origin xyz="0.010250000000000013 0.019478687706257793 -0.019238066498388086" rpy="-1.570796326794896 0.5235987755982991 -1.5707963267948968" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stname_servo_motor_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stname_servo_motor_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="ST3215_Servo_Motor_v1_1_collision">
             <origin xyz="0.010250000000000013 0.019478687706257793 -0.019238066498388086" rpy="-1.570796326794896 0.5235987755982991 -1.5707963267948968" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stname_servo_motor_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stname_servo_motor_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -142,13 +142,13 @@
         <visual name="omni_wheel_mount_v5_1_visual">
             <origin xyz="0.004838917318364206 -1.7763568394002505e-17 0.002793745502761027" rpy="1.047197551196598 -1.1102230246251563e-16 1.5707963267948968" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/omni_wheel_mount_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/omni_wheel_mount_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="omni_wheel_mount_v5_1_collision">
             <origin xyz="0.004838917318364206 -1.7763568394002505e-17 0.002793745502761027" rpy="1.047197551196598 -1.1102230246251563e-16 1.5707963267948968" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/omni_wheel_mount_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/omni_wheel_mount_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -161,7 +161,7 @@
         <visual name="a_4_Omni_Directional_Wheel_Single_Body_v1_1_visual">
             <origin xyz="0.013748155931950041 -0.007937495502761073 -2.2204460492503132e-17" rpy="-0.5235987755982988 -1.5707963267948963 0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/name_omni_directional_wheel_single_body_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/name_omni_directional_wheel_single_body_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="a_4_Omni_Directional_Wheel_Single_Body_v1_1_collision">
@@ -180,13 +180,13 @@
         <visual name="drive_motor_mount_v11_visual">
             <origin xyz="-2.3027550621890213e-09 1.9243111992750526e-09 -0.0035000000000000035" rpy="-3.141592653589793 -1.0340504353649803e-16 -2.6179938779914944" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/drive_motor_mount_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/drive_motor_mount_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="drive_motor_mount_v11_collision">
             <origin xyz="-2.3027550621890213e-09 1.9243111992750526e-09 -0.0035000000000000035" rpy="-3.141592653589793 -1.0340504353649803e-16 -2.6179938779914944" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/drive_motor_mount_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/drive_motor_mount_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -199,13 +199,13 @@
         <visual name="ST3215_Servo_Motor_v1_visual">
             <origin xyz="0.010250000000000035 0.006521312293742278 0.02579524618281096" rpy="1.5707963267948968 0.523598775598299 1.5707963267948972" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stname_servo_motor_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stname_servo_motor_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="ST3215_Servo_Motor_v1_collision">
             <origin xyz="0.010250000000000035 0.006521312293742278 0.02579524618281096" rpy="1.5707963267948968 0.523598775598299 1.5707963267948972" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stname_servo_motor_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stname_servo_motor_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -218,13 +218,13 @@
         <visual name="omni_wheel_mount_v5_visual">
             <origin xyz="-0.004838917002787113 -4.662936703425657e-17 0.002793754497239087" rpy="-1.0471975511965974 5.537547822683577e-16 1.5707963267948968" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/omni_wheel_mount_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/omni_wheel_mount_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="omni_wheel_mount_v5_collision">
             <origin xyz="-0.004838917002787113 -4.662936703425657e-17 0.002793754497239087" rpy="-1.0471975511965974 5.537547822683577e-16 1.5707963267948968" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/omni_wheel_mount_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/omni_wheel_mount_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -237,7 +237,7 @@
         <visual name="a_4_Omni_Directional_Wheel_Single_Body_v1_visual">
             <origin xyz="-0.013748155616372878 -0.007937504497239081 -5.773159728050814e-17" rpy="1.5707963267948974 -1.3089969389957468 2.094395102393195" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/name_omni_directional_wheel_single_body_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/name_omni_directional_wheel_single_body_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="a_4_Omni_Directional_Wheel_Single_Body_v1_collision">
@@ -256,13 +256,13 @@
         <visual name="servo_controller_mount_v3_visual">
             <origin xyz="0.0 0.0 0.006000000000000001" rpy="0.0 -0.0 1.5707963267948966" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/servo_controller_mount_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/servo_controller_mount_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="servo_controller_mount_v3_collision">
             <origin xyz="0.0 0.0 0.006000000000000001" rpy="0.0 -0.0 1.5707963267948966" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/servo_controller_mount_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/servo_controller_mount_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -275,13 +275,13 @@
         <visual name="lipo_battery_mount_v3_visual">
             <origin xyz="-0.01 0.0 -0.0034999999999999966" rpy="3.141592653589793 -0.0 -1.5707963267948968" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/lipo_battery_mount_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/lipo_battery_mount_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="lipo_battery_mount_v3_collision">
             <origin xyz="-0.01 0.0 -0.0034999999999999966" rpy="3.141592653589793 -0.0 -1.5707963267948968" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/lipo_battery_mount_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/lipo_battery_mount_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -294,13 +294,13 @@
         <visual name="Battery___Battery_5_2_Ah_DC5521_Plug_v2_visual">
             <origin xyz="-0.03499999999999998 -4.440892098500626e-18 -1.4432899320127036e-17" rpy="1.224646799147353e-16 -1.5707963267948966 0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/battery_battery_namename_ah_dcname_plug_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/battery_battery_namename_ah_dcname_plug_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Battery___Battery_5_2_Ah_DC5521_Plug_v2_collision">
             <origin xyz="-0.03499999999999998 -4.440892098500626e-18 -1.4432899320127036e-17" rpy="1.224646799147353e-16 -1.5707963267948966 0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/battery_battery_namename_ah_dcname_plug_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/battery_battery_namename_ah_dcname_plug_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -313,13 +313,13 @@
         <visual name="a_94868A713_NO_THREADS_Female_Threaded_Hex_Standoff_visual">
             <origin xyz="0.0 -1.3010426069826053e-18 -0.025" rpy="3.141592653589793 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="a_94868A713_NO_THREADS_Female_Threaded_Hex_Standoff_collision">
             <origin xyz="0.0 -1.3010426069826053e-18 -0.025" rpy="3.141592653589793 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -332,13 +332,13 @@
         <visual name="base_plate_layer2_v3_visual">
             <origin xyz="0.0 -6.430841866638185e-19 0.006999999999999993" rpy="0.0 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/base_plate_layername_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/base_plate_layername_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="base_plate_layer2_v3_collision">
             <origin xyz="0.0 -6.430841866638185e-19 0.006999999999999993" rpy="0.0 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/base_plate_layername_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/base_plate_layername_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -351,13 +351,13 @@
         <visual name="Bottom_V2_v3_visual">
             <origin xyz="0.019999999970197697 0.03599999999999999 1.3322676295501878e-16" rpy="4.2524008931839986e-17 3.472469791440238e-17 -3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/bottom_vname_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/bottom_vname_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Bottom_V2_v3_collision">
             <origin xyz="0.019999999970197697 0.03599999999999999 1.3322676295501878e-16" rpy="4.2524008931839986e-17 3.472469791440238e-17 -3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/bottom_vname_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/bottom_vname_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -370,13 +370,13 @@
         <visual name="Top_V2_v2_visual">
             <origin xyz="0.0003002260252632436 -0.00012500000000001065 0.026499570509487737" rpy="-3.141592653589793 3.851859888774472e-34 -3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/top_vname_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/top_vname_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Top_V2_v2_collision">
             <origin xyz="0.0003002260252632436 -0.00012500000000001065 0.026499570509487737" rpy="-3.141592653589793 3.851859888774472e-34 -3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/top_vname_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/top_vname_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -389,13 +389,13 @@
         <visual name="Camera_Mount_v8_visual">
             <origin xyz="-0.020000000000000046 0.0 0.0" rpy="0.0 -0.0 1.5707963267948966" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/wrist_camera_mount_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/wrist_camera_mount_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Camera_Mount_v8_collision">
             <origin xyz="-0.020000000000000046 0.0 0.0" rpy="0.0 -0.0 1.5707963267948966" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/wrist_camera_mount_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/wrist_camera_mount_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -408,13 +408,13 @@
         <visual name="Camera_Model_v3_visual">
             <origin xyz="-0.01600892660245488 0.0024310699968045314 -0.011393166874206155" rpy="1.7453292519943302 1.3962634015954638 -3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/camera_model_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/camera_model_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Camera_Model_v3_collision">
             <origin xyz="-0.01600892660245488 0.0024310699968045314 -0.011393166874206155" rpy="1.7453292519943302 1.3962634015954638 -3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/camera_model_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/camera_model_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -427,13 +427,13 @@
         <visual name="Base_08q_v1_visual">
             <origin xyz="-0.039999997308103726 -0.058051990747593187 -0.0024000000000000644" rpy="1.5707963267948968 6.378522481755146e-34 -3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/base_nameq_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/base_nameq_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Base_08q_v1_collision">
             <origin xyz="-0.039999997308103726 -0.058051990747593187 -0.0024000000000000644" rpy="1.5707963267948968 6.378522481755146e-34 -3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/base_nameq_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/base_nameq_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -446,13 +446,13 @@
         <visual name="WaveShare_Mounting_Plate_01d_v1_visual">
             <origin xyz="-0.005409369308163408 -0.005338654823128516 -3.552713678800501e-17" rpy="1.5707963267948966 -4.4068773779038136e-17 2.356194490192345" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/waveshare_mounting_plate_named_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/waveshare_mounting_plate_named_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="WaveShare_Mounting_Plate_01d_v1_collision">
             <origin xyz="-0.005409369308163408 -0.005338654823128516 -3.552713678800501e-17" rpy="1.5707963267948966 -4.4068773779038136e-17 2.356194490192345" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/waveshare_mounting_plate_named_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/waveshare_mounting_plate_named_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -465,13 +465,13 @@
         <visual name="Rotation_Pitch_08i_v1_visual">
             <origin xyz="2.691896153743309e-09 0.012000000747593217 0.04840000000000009" rpy="-1.5707963267948941 -3.4346225406004724e-16 1.5707963267948963" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/rotation_pitch_namei_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/rotation_pitch_namei_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Rotation_Pitch_08i_v1_collision">
             <origin xyz="2.691896153743309e-09 0.012000000747593217 0.04840000000000009" rpy="-1.5707963267948941 -3.4346225406004724e-16 1.5707963267948963" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/rotation_pitch_namei_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/rotation_pitch_namei_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -484,13 +484,13 @@
         <visual name="STS3215_03a_v1_visual">
             <origin xyz="-0.010249997308103833 0.015899999999999928 -0.020299999252406824" rpy="-1.5707963267948992 1.5707963267948928 0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stsname_namea_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stsname_namea_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="STS3215_03a_v1_collision">
             <origin xyz="-0.010249997308103833 0.015899999999999928 -0.020299999252406824" rpy="-1.5707963267948992 1.5707963267948928 0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stsname_namea_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stsname_namea_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -503,13 +503,13 @@
         <visual name="SO_ARM100_08k_Asym_Mirror_Clip_v1_visual">
             <origin xyz="-0.02319999730810401 -0.026949999252406782 -0.0372499073366073" rpy="-3.141592653589793 1.5707963267948941 0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/so_armname_namek_asym_mirror_clip_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/so_armname_namek_asym_mirror_clip_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="SO_ARM100_08k_Asym_Mirror_Clip_v1_collision">
             <origin xyz="-0.02319999730810401 -0.026949999252406782 -0.0372499073366073" rpy="-3.141592653589793 1.5707963267948941 0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/so_armname_namek_asym_mirror_clip_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/so_armname_namek_asym_mirror_clip_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -522,13 +522,13 @@
         <visual name="Passive_Horn_01_v1_visual">
             <origin xyz="2.6918962670870098e-09 7.993605777301127e-17 -7.475931163014593e-10" rpy="1.5707963267948966 -4.930380657631324e-32 6.930797439365193e-49" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/passive_horn_name_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/passive_horn_name_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Passive_Horn_01_v1_collision">
             <origin xyz="2.6918962670870098e-09 7.993605777301127e-17 -7.475931163014593e-10" rpy="1.5707963267948966 -4.930380657631324e-32 6.930797439365193e-49" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/passive_horn_name_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/passive_horn_name_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -541,13 +541,13 @@
         <visual name="STS3215_03a_v1_1_visual">
             <origin xyz="0.01590000269189606 0.010250000747593227 -0.020299999999999888" rpy="3.061616997868385e-16 1.570796326794894 0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="STS3215_03a_v1_1_collision">
             <origin xyz="0.01590000269189606 0.010250000747593227 -0.020299999999999888" rpy="3.061616997868385e-16 1.570796326794894 0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -560,13 +560,13 @@
         <visual name="SO_ARM100_08k_116_Square_v1_visual">
             <origin xyz="-0.019699997308103886 -0.06379145291921354 -0.017626866945393508" rpy="1.570796326794894 -0.08726646259971683 1.5707963267948972" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/so_armname_namek_name_square_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/so_armname_namek_name_square_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="SO_ARM100_08k_116_Square_v1_collision">
             <origin xyz="-0.019699997308103886 -0.06379145291921354 -0.017626866945393508" rpy="1.570796326794894 -0.08726646259971683 1.5707963267948972" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/so_armname_namek_name_square_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/so_armname_namek_name_square_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -579,13 +579,13 @@
         <visual name="STS3215_03a_v1_2_visual">
             <origin xyz="0.015900002691896058 -0.011980260242951542 0.0193294077561961" rpy="-1.5707963267948655 -1.4835298641951797 -1.5707963267949274" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="STS3215_03a_v1_2_collision">
             <origin xyz="0.015900002691896058 -0.011980260242951542 0.0193294077561961" rpy="-1.5707963267948655 -1.4835298641951797 -1.5707963267949274" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -598,13 +598,13 @@
         <visual name="SO_ARM100_08k_Mirror_v1_visual">
             <origin xyz="-0.019699997308103925 0.06942143618525867 -0.020252778383176597" rpy="-1.570796326794894 0.17453292519943336 -1.570796326794896" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/so_armname_namek_mirror_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/so_armname_namek_mirror_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="SO_ARM100_08k_Mirror_v1_collision">
             <origin xyz="-0.019699997308103925 0.06942143618525867 -0.020252778383176597" rpy="-1.570796326794894 0.17453292519943336 -1.570796326794896" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/so_armname_namek_mirror_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/so_armname_namek_mirror_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -617,13 +617,13 @@
         <visual name="STS3215_03a_v1_3_visual">
             <origin xyz="0.015900002691895933 -0.02177148665928616 0.006569225259552951" rpy="-1.5707963267949003 0.17453292519943228 -1.5707963267948974" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="STS3215_03a_v1_3_collision">
             <origin xyz="0.015900002691895933 -0.02177148665928616 0.006569225259552951" rpy="-1.5707963267949003 0.17453292519943228 -1.5707963267948974" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -636,13 +636,13 @@
         <visual name="Wrist_Roll_Pitch_08i_v1_visual">
             <origin xyz="-0.02009999730810403 0.011833314900678236 -0.025376621075742598" rpy="0.4363323129985828 -3.60689819227396e-15 1.3005493599094667e-17" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/wrist_roll_pitch_namei_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/wrist_roll_pitch_namei_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Wrist_Roll_Pitch_08i_v1_collision">
             <origin xyz="-0.02009999730810403 0.011833314900678236 -0.025376621075742598" rpy="0.4363323129985828 -3.60689819227396e-15 1.3005493599094667e-17" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/wrist_roll_pitch_namei_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/wrist_roll_pitch_namei_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -655,13 +655,13 @@
         <visual name="STS3215_03a_Wrist_Roll_v1_visual">
             <origin xyz="-0.01649999730810397 0.016009282130255525 -0.01007845679092931" rpy="-0.4363323129985829 -3.55514238212376e-15 -3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stsname_namea_wrist_roll_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stsname_namea_wrist_roll_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="STS3215_03a_Wrist_Roll_v1_collision">
             <origin xyz="-0.01649999730810397 0.016009282130255525 -0.01007845679092931" rpy="-0.4363323129985829 -3.55514238212376e-15 -3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stsname_namea_wrist_roll_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stsname_namea_wrist_roll_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -674,13 +674,13 @@
         <visual name="Wrist_Roll_08c_v1_visual">
             <origin xyz="2.691896090478707e-09 -6.35704431317663e-10 1.1733438753935843e-09" rpy="2.7052603405912103 3.5551423821237634e-15 3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/wrist_roll_namec_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/wrist_roll_namec_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Wrist_Roll_08c_v1_collision">
             <origin xyz="2.691896090478707e-09 -6.35704431317663e-10 1.1733438753935843e-09" rpy="2.7052603405912103 3.5551423821237634e-15 3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/wrist_roll_namec_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/wrist_roll_namec_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -693,13 +693,13 @@
         <visual name="STS3215_03a_v1_4_visual">
             <origin xyz="-0.0202999973081038 -0.01600928457570463 0.010078452554247068" rpy="-0.4363323129985825 9.798519944458119e-17 -3.1415926535897896" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="STS3215_03a_v1_4_collision">
             <origin xyz="-0.0202999973081038 -0.01600928457570463 0.010078452554247068" rpy="-0.4363323129985825 9.798519944458119e-17 -3.1415926535897896" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/stsname_namea_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -712,13 +712,13 @@
         <visual name="Moving_Jaw_08d_v1_visual">
             <origin xyz="2.6918962081623476e-09 0.01848868068371523 0.008621416469254514" rpy="1.1344640137963138 3.5551423821237634e-15 3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/moving_jaw_named_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/moving_jaw_named_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Moving_Jaw_08d_v1_collision">
             <origin xyz="2.6918962081623476e-09 0.01848868068371523 0.008621416469254514" rpy="1.1344640137963138 3.5551423821237634e-15 3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/moving_jaw_named_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/moving_jaw_named_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <surface>
                 <friction>
@@ -739,13 +739,13 @@
         <visual name="Wrist_Camera_Mount_v11_visual">
             <origin xyz="-0.01244999730810389 3.3029762747105453e-09 -3.6269132763777637e-09" rpy="1.3015577936510953e-16 -0.4363323129985829 1.5707963267948932" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/wrist_camera_mount_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/wrist_camera_mount_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Wrist_Camera_Mount_v11_collision">
             <origin xyz="-0.01244999730810389 3.3029762747105453e-09 -3.6269132763777637e-09" rpy="1.3015577936510953e-16 -0.4363323129985829 1.5707963267948932" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/wrist_camera_mount_vname.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/wrist_camera_mount_vname.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -758,13 +758,13 @@
         <visual name="a_94868A713_NO_THREADS_Female_Threaded_Hex_Standoff_1_visual">
             <origin xyz="0.0 0.0 -0.025" rpy="3.141592653589793 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="a_94868A713_NO_THREADS_Female_Threaded_Hex_Standoff_1_collision">
             <origin xyz="0.0 0.0 -0.025" rpy="3.141592653589793 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -777,13 +777,13 @@
         <visual name="a_94868A713_NO_THREADS_Female_Threaded_Hex_Standoff_2_visual">
             <origin xyz="0.0 0.0 -0.0248159696016958" rpy="3.141592653589793 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="a_94868A713_NO_THREADS_Female_Threaded_Hex_Standoff_2_collision">
             <origin xyz="0.0 0.0 -0.0248159696016958" rpy="3.141592653589793 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -796,13 +796,13 @@
         <visual name="Camera_Model_v3_1_visual">
             <origin xyz="0.0060386479186058575 -0.01378730883655603 -0.012862534163259838" rpy="-0.17453292519943064 -0.9599310885968775 -3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/camera_model_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/camera_model_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="Camera_Model_v3_1_collision">
             <origin xyz="0.0060386479186058575 -0.01378730883655603 -0.012862534163259838" rpy="-0.17453292519943064 -0.9599310885968775 -3.141592653589793" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/camera_model_vname_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/camera_model_vname_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -815,13 +815,13 @@
         <visual name="a_94868A713_NO_THREADS_Female_Threaded_Hex_Standoff_3_visual">
             <origin xyz="-3.784438185050476e-10 -1.924311248124866e-09 -0.02499999999999999" rpy="3.141592653589793 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="a_94868A713_NO_THREADS_Female_Threaded_Hex_Standoff_3_collision">
             <origin xyz="-3.784438185050476e-10 -1.924311248124866e-09 -0.02499999999999999" rpy="3.141592653589793 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -834,13 +834,13 @@
         <visual name="a_94868A713_NO_THREADS_Female_Threaded_Hex_Standoff_4_visual">
             <origin xyz="3.784438895593212e-10 1.924311243683974e-09 -0.025" rpy="3.141592653589793 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="a_94868A713_NO_THREADS_Female_Threaded_Hex_Standoff_4_collision">
             <origin xyz="3.784438895593212e-10 1.924311243683974e-09 -0.025" rpy="3.141592653589793 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>
@@ -853,13 +853,13 @@
         <visual name="a_94868A713_NO_THREADS_Female_Threaded_Hex_Standoff_5_visual">
             <origin xyz="0.0 0.0 -0.025" rpy="3.141592653589793 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision name="a_94868A713_NO_THREADS_Female_Threaded_Hex_Standoff_5_collision">
             <origin xyz="0.0 0.0 -0.025" rpy="3.141592653589793 -0.0 0.0" />
             <geometry>
-                <mesh filename="file:///home/vpraise/workspace/lerobot_ros2/urdf/lekiwi/meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="meshes/nameaname_no_threads_female_threaded_hex_standoff_name.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
     </link>

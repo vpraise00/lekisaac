@@ -150,9 +150,6 @@ def convert_arm_action_from_so101_leader(
     """
     processed_action = torch.zeros(teleop_device.env.num_envs, 6, device=teleop_device.env.device)
 
-    # Debug: track shoulder_pan values (set to True to enable)
-    debug_shoulder_pan = False
-
     for joint_name, motor_id in joint_names_to_motor_ids.items():
         # Get normalized position from leader
         normalized_pos = joint_state[joint_name]
@@ -177,11 +174,6 @@ def convert_arm_action_from_so101_leader(
 
         transformed_radius = processed_radius * inversion * scale + offset
         processed_action[:, motor_id] = transformed_radius
-
-        # Debug output for shoulder_pan
-        if joint_name == "shoulder_pan" and debug_shoulder_pan:
-            print(f"[DEBUG] shoulder_pan: norm={normalized_pos:.2f}, rad={processed_radius:.3f}, "
-                  f"inv={inversion}, scale={scale}, offset={offset}, final={transformed_radius:.3f}")
 
     return processed_action
 
